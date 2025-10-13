@@ -1,0 +1,145 @@
+:root {
+  --verde-esmeralda: #2E8B57;
+  --amarillo-mostaza: #FFD700;
+  --marron-claro: #8B4513;
+  --gris-oscuro: #333;
+  --gris-medio: #666;
+  --blanco: #fff;
+}
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Header */
+.cart-header {
+  background: var(--verde-esmeralda);
+  color: var(--blanco);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cart-header h1 {
+  font-size: 1.5rem;
+}
+
+.btn-volver {
+  background: var(--amarillo-mostaza);
+  color: var(--marron-claro);
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.btn-volver:hover {
+  background: #e6c200;
+}
+
+/* Main container */
+.cart-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: var(--blanco);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.cart-container h2 {
+  margin-bottom: 1rem;
+  color: var(--marron-claro);
+}
+
+/* Lista del carrito */
+.cart-list {
+  list-style: none;
+  margin-bottom: 2rem;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.cart-item img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.cart-info {
+  flex: 1;
+  margin-left: 1rem;
+}
+
+.cart-info h3 {
+  font-size: 1rem;
+  color: var(--gris-oscuro);
+}
+
+.cart-info p {
+  color: var(--gris-medio);
+  font-size: 0.9rem;
+}
+
+.cart-price {
+  font-weight: bold;
+  color: var(--verde-esmeralda);
+}
+
+/* Total y botón */
+.cart-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-finalizar {
+  background: var(--verde-esmeralda);
+  color: var(--blanco);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-finalizar:hover {
+  background: #246a44;
+}
+
+/* Footer */
+.cart-footer {
+  background: var(--gris-oscuro);
+  color: var(--blanco);
+  text-align: center;
+  padding: 1rem;
+  margin-top: 3rem;
+}
+
+.btn-volver-catalogo {
+  display: inline-block;
+  padding: 8px 15px;
+  background-color: #4CAF50;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.btn-volver-catalogo:hover {
+  background-color: #45a049;
+}
+

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro/Login - Huerto Hogar</title>
+    <link rel="stylesheet" href="./css/style.css"> <!-- Login y Registro -->
+</head>
+<body>
+
+<!-- Registro -->
+<div class="container" id="register-container">
+    <h2>Crear una cuenta</h2>
+    <form id="registerForm">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" placeholder="Tu nombre" required>
+
+        <label for="apellido">Apellido:</label>
+        <input type="text" id="apellido" placeholder="Tu apellido" required>
+
+        <label for="correo">Correo electrónico:</label>
+        <input type="email" id="correo" placeholder="usuario@correo.com" required>
+
+        <label for="clave1">Contraseña:</label>
+        <input type="password" id="clave1" placeholder="Contraseña" required>
+
+        <label for="clave2">Repetir contraseña:</label>
+        <input type="password" id="clave2" placeholder="Repetir contraseña" required>
+
+        <button type="submit">Registrarse</button>
+    </form>
+    <p>¿Ya tienes cuenta? <a href="#" id="goLogin">Iniciar sesión</a></p>
+    <p id="errorRegistro"></p>
+</div>
+
+<!-- Login -->
+<div class="container hidden" id="login-container">
+    <h2>Iniciar sesión</h2>
+    <form id="loginForm">
+        <label for="loginCorreo">Correo electrónico:</label>
+        <input type="email" id="loginCorreo" required>
+
+        <label for="loginClave">Contraseña:</label>
+        <input type="password" id="loginClave" required>
+
+        <button type="submit">Entrar</button>
+    </form>
+    <p>¿No tienes cuenta? <a href="#" id="goRegister">Registrarse</a></p>
+    <p id="errorLogin"></p>
+</div>
+
+<!-- Landing Page -->
+<div id="landingPage" class="huertohogar-page hidden">
+    <header>
+        <div class="logo">
+            <img src="./imagenes/image-removebg-preview.png" alt="Huerto_Hogar Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="nosotros.html">SOBRE NOSOTROS</a></li>
+                <li><a href="catalogo.html"><i class="fas fa-th"></i> CATÁLOGO</a></li>
+                <li><a href="contacto.html"><i class="fas fa-envelope"></i> CONTACTO</a></li>
+                <li><a href="index.html"><i class="fas fa-user"></i> LOGIN</a></li>
+                <li><a href="carrito.html"><i class="fas fa-shopping-cart"></i> CARRITO</a></li>
+                <li><button id="logoutBtn">Cerrar sesión</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">   
+            <h1>BIENVENIDO A HUERTOHOGAR</h1>
+            <p id="personalWelcome"></p>
+            <p>Empieza tus compras con nosotros a partir de hoy.</p>
+
+            <!-- Botones principales -->
+            <a href="catalogo.html" class="btn btn-primary">Ir a Comprar</a>
+        </div>
+    </section>
+
+    <section id="about-us" class="about-section">
+        <div class="map-section">
+            <h3>Encuéntranos en nuestras tiendas físicas</h3>
+            <p>Estamos presentes en:</p>
+            <ul>
+                <li>Santiago</li>
+                <li>Puerto Montt</li>
+                <li>Villarica</li>
+                <li>Nacimiento</li>
+                <li>Viña del Mar</li>
+                <li>Valparaíso</li>
+                <li>Concepción</li>
+            </ul>
+            <div id="huertoHogarMap" style="height: 400px; width: 100%;"></div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy;HuertoHogar. Todos los derechos reservados.</p>
+    </footer>
+</div>
+
+<!-- Scripts -->
+<script src="main.js"></script>
+<script src="./js/catalogo.js"></script>
+<script src="./js/session.js"></script>
+
+</body>
+</html>
