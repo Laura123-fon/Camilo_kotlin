@@ -37,7 +37,7 @@ fun ResumenScreen(viewModel: UsuarioViewModel) {
         )
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text(
+        Text(juuuuu
             text = "Bienvenido/a, ${estado.nombre}",
             style = MaterialTheme.typography.titleLarge
         )
