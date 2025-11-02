@@ -12,7 +12,9 @@ import androidx.compose.ui.unit.dp
 import com.example.app_definida.viewmodel.UsuarioViewModel
 
 @Composable
-fun ResumenScreen(viewModel: UsuarioViewModel) {
+fun ResumenScreen(
+    viewModel: UsuarioViewModel
+) {
     val estado by viewModel.estado.collectAsState()
 
     Column(Modifier.padding(16.dp)) {

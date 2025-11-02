@@ -2,9 +2,9 @@ package com.example.app_definida
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent // Importación correcta
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.LaunchedEffect
@@ -20,12 +20,14 @@ import kotlinx.coroutines.flow.collectLatest
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
             APP_DEFINIDATheme {
+                // 1. Creas el ViewModel y el NavController (¡Correcto!)
                 val mainViewModel: MainViewModel = viewModel()
                 val navController = rememberNavController()
 
-                // "Cerebro" de la navegación: Escucha eventos del ViewModel y actúa sobre el NavController.
+                // 2. El "cerebro" de la navegación que escucha eventos (¡Correcto!)
                 LaunchedEffect(Unit) {
                     mainViewModel.navigationEvents.collectLatest { event ->
                         when (event) {
@@ -46,14 +48,10 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-                // Construcción de la UI
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                // 3. Construcción de la UI
+                Scaffold { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
-                        // Pasamos las instancias de control a nuestro grafo de navegación.
-                        AppNavigation(
-                            navController = navController,
-                            mainViewModel = mainViewModel
-                        )
+                        AppNavigation()
                     }
                 }
             }

@@ -20,18 +20,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import com.example.app_definida.navigation.Screen // Importar la clase Screen
-import com.example.app_definida.viewmodel.MainViewModel
+import androidx.navigation.NavController
 import com.example.app_definida.viewmodel.UsuarioViewModel
 
 @Composable
 fun RegistroScreen(
-    // 1. CAMBIO EN LA FIRMA: Recibe MainViewModel y ya no NavController
-    mainViewModel: MainViewModel,
-    usuarioViewModel: UsuarioViewModel
+    navController: NavController,
+    viewModel: UsuarioViewModel
 ) {
     // 2. CORRECCIÓN: Usa el nombre correcto del parámetro -> 'usuarioViewModel'
-    val estado by usuarioViewModel.estado.collectAsState()
+    val estado by viewModel.estado.collectAsState()
 
     Column(
         Modifier
@@ -42,7 +40,7 @@ fun RegistroScreen(
         OutlinedTextField(
             value = estado.nombre,
             // 3. CORRECCIÓN: Referencia correcta al ViewModel
-            onValueChange = usuarioViewModel::onNombreChange,
+            onValueChange = viewModel::onNombreChange,
             label = { Text("Nombre") },
             isError = estado.errores.nombre != null,
             supportingText = {
@@ -55,7 +53,7 @@ fun RegistroScreen(
 
         OutlinedTextField(
             value = estado.correo,
-            onValueChange = usuarioViewModel::onCorreoChange,
+            onValueChange = viewModel::onCorreoChange,
             label = { Text("Correo") },
             isError = estado.errores.correo != null,
             supportingText = {
@@ -69,7 +67,7 @@ fun RegistroScreen(
 
         OutlinedTextField(
             value = estado.clave,
-            onValueChange = usuarioViewModel::onClaveChange,
+            onValueChange = viewModel::onClaveChange,
             label = { Text("Clave") },
             visualTransformation = PasswordVisualTransformation(),
             isError = estado.errores.clave != null,
@@ -83,7 +81,7 @@ fun RegistroScreen(
 
         OutlinedTextField(
             value = estado.direccion,
-            onValueChange = usuarioViewModel::onDireccionChange,
+            onValueChange = viewModel::onDireccionChange,
             label = { Text("Direccion") },
             isError = estado.errores.direccion != null,
             supportingText = {
@@ -97,7 +95,7 @@ fun RegistroScreen(
         Row (verticalAlignment = Alignment.CenterVertically){
             Checkbox(
                 checked = estado.aceptaTerminos,
-                onCheckedChange = usuarioViewModel::onAceptarTerminosChange
+                onCheckedChange = viewModel::onAceptarTerminosChange
             )
             Spacer(Modifier.width(8.dp))
             Text("Acepto los terminos y condiciones")
@@ -106,15 +104,15 @@ fun RegistroScreen(
         Button(
             onClick = {
                 // 5. CAMBIO: La validación ahora debe estar en el ViewModel
-                if (usuarioViewModel.validarFormulario()){
+                if (viewModel.validarFormulario()){
                     // Le pedimos al MainViewModel que navegue por nosotros
-                    mainViewModel.navigateTo(Screen.Resumen)
+                    navController.navigate("resumen")
                 }
             },
             // El botón tampoco debería tener fillMaxSize()
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("registrar")
+            Text("Registrar")
         }
     }
 }
