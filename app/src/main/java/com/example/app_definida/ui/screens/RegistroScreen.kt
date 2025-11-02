@@ -21,12 +21,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.app_definida.viewmodel.MainViewModel
 import com.example.app_definida.viewmodel.UsuarioViewModel
+import com.example.app_definida.navigation.AppRoute // <-- AÑADE ESTA LÍNEA
 
 @Composable
 fun RegistroScreen(
     navController: NavController,
-    viewModel: UsuarioViewModel
+    viewModel: UsuarioViewModel,     // <-- El segundo es UsuarioViewModel
+    mainViewModel: MainViewModel
 ) {
     // 2. CORRECCIÓN: Usa el nombre correcto del parámetro -> 'usuarioViewModel'
     val estado by viewModel.estado.collectAsState()
@@ -103,16 +106,19 @@ fun RegistroScreen(
 
         Button(
             onClick = {
-                // 5. CAMBIO: La validación ahora debe estar en el ViewModel
-                if (viewModel.validarFormulario()){
-                    // Le pedimos al MainViewModel que navegue por nosotros
-                    navController.navigate("resumen")
+                if (viewModel.validarFormulario()) {
+                    mainViewModel.navigateTo(
+                        route = AppRoute.Resumen,          // Destino
+                        popUpToRoute = AppRoute.Registro,  // Elimina esta pantalla de la pila
+                        inclusive = true                   // Para que el botón "atrás" no vuelva al registro
+                    )
                 }
             },
             // El botón tampoco debería tener fillMaxSize()
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Registrar")
+
         }
     }
 }

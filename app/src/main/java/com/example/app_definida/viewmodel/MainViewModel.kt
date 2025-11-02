@@ -1,33 +1,32 @@
 package com.example.app_definida.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.app_definida.navigation.AppRoute
 import com.example.app_definida.navigation.NavigationEvent
-import com.example.app_definida.navigation.Screen
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-
 class MainViewModel : ViewModel() {
-    private val _navigationEvents = MutableSharedFlow<NavigationEvent>()
-    val navigationEvents: SharedFlow<NavigationEvent> = _navigationEvents.asSharedFlow()
+    private val _navEvents = MutableSharedFlow<NavigationEvent>()
+    val navEvents = _navEvents.asSharedFlow()
 
-    fun navigateTo(screen: Screen) {
-        CoroutineScope(Dispatchers.Main).launch {
-            _navigationEvents.emit(NavigationEvent.NavigateTo(route = screen))
-        }
-    }
-    fun navigateBack(){
-        CoroutineScope(Dispatchers.Main).launch {
-            _navigationEvents.emit(NavigationEvent.PopBackStack)
-        }
-    }
-    fun navegationUp(){
-        CoroutineScope(Dispatchers.Main).launch {
-            _navigationEvents.emit(NavigationEvent.NavigateUp)
+    fun navigateTo(
+        route: AppRoute,
+        popUpToRoute: AppRoute? = null,
+        inclusive: Boolean = false,
+        singleTop: Boolean = false
+    ) {
+        viewModelScope.launch {
+            _navEvents.emit(
+                NavigationEvent.NavigateTo(
+                    appRoute = route,
+                    popUpToRoute = popUpToRoute,
+                    inclusive = inclusive,
+                    singleTop = singleTop
+                )
+            )
         }
     }
 }

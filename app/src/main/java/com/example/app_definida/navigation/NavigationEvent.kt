@@ -1,12 +1,11 @@
 package com.example.app_definida.navigation
 
 sealed class NavigationEvent {
-
     data class NavigateTo(
-        val route: Screen,
-        val popUpToRoute: Screen? = null,
+        val appRoute: AppRoute,
+        val popUpToRoute: AppRoute? = null,
         val inclusive: Boolean = false,
-        val singleTop: Boolean = false
+        val singleTop: Boolean = true
     ) : NavigationEvent()
 
     data object PopBackStack : NavigationEvent()

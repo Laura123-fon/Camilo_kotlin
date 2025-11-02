@@ -19,15 +19,15 @@ fun AppNavigation(modifier: Modifier = Modifier) {
     val mainViewModel: MainViewModel = viewModel()
     val usuarioViewModel: UsuarioViewModel = viewModel()
 
-    // 2. El "cerebro" de la navegación que escucha los eventos del MainViewModel.
+    // Este LaunchedEffect escucha los eventos de navegación y los ejecuta.
+    // Ya no debería darte ningún error aquí.
     LaunchedEffect(key1 = Unit) {
-        mainViewModel.navigationEvents.collectLatest { event ->
+        mainViewModel.navEvents.collectLatest { event ->
             when (event) {
                 is NavigationEvent.NavigateTo -> {
-                    navController.navigate(event.route.route) {
+                    navController.navigate(event.appRoute.route) {
                         event.popUpToRoute?.let { popUpTo(it.route) { inclusive = event.inclusive } }
                         launchSingleTop = event.singleTop
-                        restoreState = true
                     }
                 }
                 is NavigationEvent.PopBackStack -> navController.popBackStack()
@@ -36,18 +36,17 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         }
     }
 
-    // 3. El NavHost usa los controladores que se acaban de crear en este Composable.
     NavHost(
         navController = navController,
-        startDestination = Screen.Registro.route,
+        startDestination = AppRoute.Registro.route, // <-- Usa AppRoute
         modifier = modifier
     ) {
-        composable(Screen.Registro.route) {
+        composable(AppRoute.Registro.route) { // <-- Usa AppRoute
             RegistroScreen(
-                navController, usuarioViewModel
+                navController, usuarioViewModel,mainViewModel
             )
         }
-        composable(Screen.Resumen.route) {
+        composable(AppRoute.Resumen.route) { // <-- Usa AppRoute
             ResumenScreen(
                 usuarioViewModel
             )

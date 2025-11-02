@@ -20,10 +20,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.app_definida.navigation.Screen
 import com.example.app_definida.viewmodel.MainViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import com.example.app_definida.navigation.AppRoute
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,13 +31,13 @@ fun ProfileScreen(
     navController: NavController,
     viewModel: MainViewModel = viewModel()
 ){
-    val items = listOf(Screen.Home, Screen.Profile)
+    val items = listOf(AppRoute.Home, AppRoute.Profile)
     var selectedItem by remember { mutableStateOf(1) }
 
     Scaffold(
         bottomBar = {
-            NavigationBar { 
-                items.forEachIndexed { index, screen -> 
+            NavigationBar {
+                items.forEachIndexed { index, screen ->
                     NavigationBarItem(
                         selected = selectedItem == index,
                         onClick = {
@@ -47,7 +47,7 @@ fun ProfileScreen(
                         label = { Text(screen.route) },
                         icon = {
                             Icon(
-                                imageVector = if (screen == Screen.Home) Icons.Default.Home else Icons.Default.Person,
+                                imageVector = if (screen == AppRoute.Home) Icons.Default.Home else Icons.Default.Person,
                                 contentDescription = screen.route
                             )
                         }

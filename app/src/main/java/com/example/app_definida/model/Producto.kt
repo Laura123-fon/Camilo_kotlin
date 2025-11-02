@@ -1,0 +1,10 @@
+package com.example.app_definida.model
+
+data class Producto(
+    val id: String,
+    val nombre: String,
+    val descripcion: String,
+    val precio: Double,
+    val categoria: String,
+    val origen: String
+)

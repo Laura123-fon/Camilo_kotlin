@@ -46,8 +46,8 @@ fun APP_DEFINIDATheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        darkTheme -> com.example.app_definida.ui.theme.DarkColorScheme
+        else -> com.example.app_definida.ui.theme.LightColorScheme
     }
 
     MaterialTheme(

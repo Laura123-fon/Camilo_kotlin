@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.app_definida.navigation.Screen
+import com.example.app_definida.navigation.AppRoute
 import com.example.app_definida.viewmodel.MainViewModel
 
 
@@ -33,7 +33,7 @@ fun SettingsScreen(
         Text(text = "Pantalla de configuracion settings")
         Button(
             onClick = {
-                viewModel.navigateTo(Screen.Home)
+                viewModel.navigateTo(AppRoute.Home)
             }
         ) {
            Text("volver al inicio")
@@ -41,7 +41,7 @@ fun SettingsScreen(
         Spacer(modifier = Modifier.height(24.dp))
         Button(
             onClick ={
-                viewModel.navigateTo(Screen.Profile)
+                viewModel.navigateTo(AppRoute.Profile)
             }
         ) { Text("Ir a perfil")}
 
