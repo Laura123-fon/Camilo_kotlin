@@ -1,8 +1,7 @@
 package com.example.app_definida.repository
 
 import com.example.app_definida.model.Producto
-/**
-solo commit */
+
 class ProductoRepository {
     fun getProductos(): List<Producto> {
         return listOf(
