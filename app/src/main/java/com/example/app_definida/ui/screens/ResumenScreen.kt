@@ -42,7 +42,7 @@ fun ResumenScreen() {
             style = MaterialTheme.typography.titleLarge
         )
         Spacer(modifier = Modifier.height(16.dp))
-        Text(text = "Hemos registrado tu correo:")
+        Text(text = "Hemos registrado su correo:")
         Text(
             text = estado.correo,
             fontWeight = FontWeight.SemiBold

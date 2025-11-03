@@ -11,3 +11,5 @@ sealed class NavigationEvent {
     data object PopBackStack : NavigationEvent()
     data object NavigateUp : NavigationEvent()
 }
+/**
+solo commit */

@@ -44,7 +44,7 @@ fun WebScreen(
         )
 
         Text(
-            text = "HuertoHogar 🍎🥦",
+            text = "Huerto-Hogar 🍎🥦",
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFF2E8B57),

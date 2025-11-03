@@ -14,7 +14,8 @@ import com.example.app_definida.ui.screens.WebScreen
 import com.example.app_definida.viewmodel.UsuarioViewModel
 import com.example.app_definida.viewmodel.MainViewModel
 import kotlinx.coroutines.flow.collectLatest
-
+/**
+solo commit */
 @Composable
 fun AppNavigation(modifier: Modifier = Modifier) {
     val navController = rememberNavController()

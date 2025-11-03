@@ -36,7 +36,7 @@ fun HomeScreen(
     ) {
         item {
             Text(
-                text = "¡Descubre la Frescura!",
+                text = "¡Descubre la Frescura del Huerto Hogar!",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xFF2E8B57) // Verde Esmeralda

@@ -29,7 +29,7 @@ sealed class BottomBarRoute(
 ) {
     object Home : BottomBarRoute("home", "Catálogo", Icons.Default.Home)
     object Profile : BottomBarRoute("profile", "Perfil", Icons.Default.Person)
-    object Cart : BottomBarRoute("cart", "Carrito", Icons.Default.ShoppingCart)
+    object Cart : BottomBarRoute("cart", "Carrito de compras", Icons.Default.ShoppingCart)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

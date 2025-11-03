@@ -8,11 +8,6 @@ import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
-/**
- * Calcula y devuelve la clase de tamaño de la ventana actual.
- * Esta función es esencial para crear diseños adaptativos que funcionen en diferentes
- * tamaños de pantalla (móviles, tabletas, etc.).
- */
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun obtenerWindowSizeClass(): WindowSizeClass {

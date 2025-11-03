@@ -3,8 +3,7 @@ package com.example.app_definida.ui.state
 import com.example.app_definida.model.CartItem // -> Importa desde 'model'
 
 /**
- * Representa el estado completo de la pantalla del carrito.
- */
+solo commit */
 data class CartUiState(
     val items: List<CartItem> = emptyList(),
     val subtotal: Double = 0.0,

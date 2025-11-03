@@ -29,7 +29,7 @@ fun PaymentScreen() {
         )
         Spacer(modifier = Modifier.height(24.dp))
         Text(
-            text = "¡Gracias por tu compra!",
+            text = "¡Gracias por su compra!",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )

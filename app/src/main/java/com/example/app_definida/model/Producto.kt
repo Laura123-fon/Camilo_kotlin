@@ -1,5 +1,6 @@
 package com.example.app_definida.model
-
+/**
+solo commit */
 data class Producto(
     val id: String,
     val nombre: String,

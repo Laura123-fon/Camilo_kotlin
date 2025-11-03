@@ -4,7 +4,8 @@ data class CartItem(
     val producto: Producto,
     val cantidad: Int = 1
 )
-
+/**
+solo commit */
 // Representa el estado completo del carrito en un momento dado
 data class CartUiState(
     val items: List<CartItem> = emptyList(),

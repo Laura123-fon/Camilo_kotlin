@@ -89,7 +89,7 @@ fun RegistroScreen(
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Registrar")
+            Text("Registrarse")
         }
     }
 }

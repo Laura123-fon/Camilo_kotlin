@@ -45,8 +45,6 @@ fun AppContent() {
             }
         }
     }
-
-    // El NavHost que define el mapa de la app
     AppNavHost(
         navController = navController,
         mainViewModel = mainViewModel

@@ -68,7 +68,7 @@ fun CartItemRow(cartItem: CartItem, viewModel: CartViewModel) {
             Text("Precio: $${"%,.0f".format(cartItem.producto.precio * cartItem.cantidad)} CLP", color = Color.Gray)
         }
         IconButton(onClick = { viewModel.eliminarProducto(cartItem) }) {
-            Icon(Icons.Default.Delete, contentDescription = "Eliminar producto", tint = MaterialTheme.colorScheme.error)
+            Icon(Icons.Default.Delete, contentDescription = "Eliminar productos", tint = MaterialTheme.colorScheme.error)
         }
     }
 }

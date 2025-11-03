@@ -8,7 +8,7 @@ data class UsuarioUiState(
     val aceptaTerminos: Boolean = false,
     val errores: UsuarioErrores = UsuarioErrores()
 )
-
+// Añadido para consistencias
 data class UsuarioErrores(
     val nombre: String? = null,
     val correo: String? = null,

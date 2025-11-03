@@ -36,7 +36,7 @@ fun SettingsScreen(
                 viewModel.navigateTo(AppRoute.Home)
             }
         ) {
-           Text("volver al inicio")
+           Text("Volver al inicio")
         }
         Spacer(modifier = Modifier.height(24.dp))
         Button(

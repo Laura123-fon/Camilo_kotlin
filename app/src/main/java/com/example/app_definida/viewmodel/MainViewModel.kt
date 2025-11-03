@@ -33,7 +33,7 @@ class MainViewModel : ViewModel() {
         route: AppRoute,
         popUpToRoute: AppRoute? = null,
         inclusive: Boolean = false,
-        singleTop: Boolean = false // Añadido para consistencia
+        singleTop: Boolean = false // Añadido para consistencias
     ) {
         viewModelScope.launch {
             _navEvents.emit(

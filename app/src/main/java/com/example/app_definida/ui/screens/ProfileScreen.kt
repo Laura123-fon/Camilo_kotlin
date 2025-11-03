@@ -35,7 +35,7 @@ fun ProfileScreen(
     ) {
         Icon(
             imageVector = Icons.Default.Person,
-            contentDescription = "Icono de Perfil",
+            contentDescription = "Icon de Perfil",
             modifier = Modifier.size(100.dp),
             tint = Color(0xFF2E8B57) // Verde Esmeralda
         )

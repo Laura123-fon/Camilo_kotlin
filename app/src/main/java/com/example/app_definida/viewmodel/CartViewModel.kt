@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.update
 class CartViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(CartUiState())
     val uiState = _uiState.asStateFlow()
-
+    // Añadido para consistencias
     fun agregarProducto(producto: Producto) {
         _uiState.update { currentState ->
             val itemsActuales = currentState.items.toMutableList()
