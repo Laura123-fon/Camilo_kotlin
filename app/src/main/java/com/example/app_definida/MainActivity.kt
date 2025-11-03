@@ -13,6 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.app_definida.navigation.AppRoute
 import com.example.app_definida.navigation.NavigationEvent
 import com.example.app_definida.ui.screens.MainScreen
+import com.example.app_definida.ui.screens.PaymentScreen
 import com.example.app_definida.ui.screens.RegistroScreen
 import com.example.app_definida.ui.theme.APP_DEFINIDATheme
 import com.example.app_definida.viewmodel.MainViewModel
@@ -35,7 +36,6 @@ fun AppContent() {
     val navController = rememberNavController()
     val mainViewModel: MainViewModel = viewModel()
 
-    // ESTE ES EL CEREBRO QUE ESCUCHA LOS EVENTOS DE NAVEGACIÓN
     LaunchedEffect(key1 = Unit) {
         mainViewModel.navEvents.collectLatest { event ->
             if (event is NavigationEvent.NavigateTo) {
@@ -59,19 +59,19 @@ fun AppNavHost(navController: NavHostController, mainViewModel: MainViewModel) {
         navController = navController,
         startDestination = AppRoute.Registro.route
     ) {
-        // Pantalla de Registro
         composable(AppRoute.Registro.route) {
-            // Llama a la versión correcta de RegistroScreen
             RegistroScreen(
                 viewModel = usuarioViewModel,
                 mainViewModel = mainViewModel
             )
         }
 
-        // Pantalla Principal (con la Bottom Navigation Bar)
-        // ESTA ES LA RUTA QUE FALTABA O ESTABA INCORRECTA
         composable(AppRoute.Main.route) {
-            MainScreen()
+            MainScreen(usuarioViewModel = usuarioViewModel)
+        }
+
+        composable(AppRoute.Payment.route) {
+            PaymentScreen()
         }
     }
 }

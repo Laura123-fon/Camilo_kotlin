@@ -29,13 +29,13 @@ fun PaymentScreen() {
         )
         Spacer(modifier = Modifier.height(24.dp))
         Text(
-            text = "¡Gracias por su compra!",
+            text = "¡Gracias por tu compra!",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Tu pedido ha sido procesado y será preparado para el envío.",
+            text = "Tu pedido ha sido procesado y será preparado para el envío.\nRecibirás una boleta a tu correo.",
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyLarge
         )

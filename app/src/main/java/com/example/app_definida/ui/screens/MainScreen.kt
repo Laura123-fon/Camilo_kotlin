@@ -5,7 +5,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -13,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -29,24 +29,22 @@ sealed class BottomBarRoute(
 ) {
     object Home : BottomBarRoute("home", "Catálogo", Icons.Default.Home)
     object Profile : BottomBarRoute("profile", "Perfil", Icons.Default.Person)
-    object Cart : BottomBarRoute("cart", "Carrito de compras", Icons.Default.ShoppingCart)
+    object Cart : BottomBarRoute("cart", "Carrito", Icons.Default.ShoppingCart)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen() {
+fun MainScreen(usuarioViewModel: UsuarioViewModel) {
     val mainViewModel: MainViewModel = viewModel()
     val cartViewModel: CartViewModel = viewModel()
     val navController = rememberNavController()
-    val usuarioViewModel: UsuarioViewModel = viewModel()
-
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("HuertoHogar") },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF2E8B57), // Verde Esmeralda
+                    containerColor = Color(0xFF2E8B57),
                     titleContentColor = Color.White
                 )
             )
@@ -55,12 +53,7 @@ fun MainScreen() {
             NavigationBar {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
-
-                val navItems = listOf(
-                    BottomBarRoute.Home,
-                    BottomBarRoute.Profile,
-                    BottomBarRoute.Cart
-                )
+                val navItems = listOf(BottomBarRoute.Home, BottomBarRoute.Profile, BottomBarRoute.Cart)
 
                 navItems.forEach { screen ->
                     NavigationBarItem(
@@ -80,20 +73,21 @@ fun MainScreen() {
         }
     ) { innerPadding ->
         NavHost(
-            navController,
+            navController = navController,
             startDestination = BottomBarRoute.Home.route,
-            Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding)
         ) {
             composable(BottomBarRoute.Home.route) {
                 HomeScreen(cartViewModel = cartViewModel)
             }
+
             composable(BottomBarRoute.Profile.route) {
                 ProfileScreen(usuarioViewModel = usuarioViewModel)
             }
+
             composable(BottomBarRoute.Cart.route) {
                 CartScreen(cartViewModel = cartViewModel, mainViewModel = mainViewModel)
             }
-
         }
     }
 }

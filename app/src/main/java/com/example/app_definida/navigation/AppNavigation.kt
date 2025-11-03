@@ -14,8 +14,8 @@ import com.example.app_definida.ui.screens.WebScreen
 import com.example.app_definida.viewmodel.UsuarioViewModel
 import com.example.app_definida.viewmodel.MainViewModel
 import kotlinx.coroutines.flow.collectLatest
-/**
-solo commit */
+
+
 @Composable
 fun AppNavigation(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
@@ -39,10 +39,9 @@ fun AppNavigation(modifier: Modifier = Modifier) {
 
     NavHost(
         navController = navController,
-        startDestination = AppRoute.Web.route, // <-- antes era Registro
+        startDestination = AppRoute.Web.route,
         modifier = modifier
     ) {
-        // --- Pantalla Web de Bienvenida ---
         composable(AppRoute.Web.route) {
             WebScreen(
                 onContinuar = {
@@ -55,7 +54,6 @@ fun AppNavigation(modifier: Modifier = Modifier) {
             )
         }
 
-        // --- Pantalla de Registro ---
         composable(AppRoute.Registro.route) {
             RegistroScreen(
                 viewModel = usuarioViewModel,
@@ -63,14 +61,12 @@ fun AppNavigation(modifier: Modifier = Modifier) {
             )
         }
 
-        // --- Pantalla de Resumen ---
         composable(AppRoute.Resumen.route) {
             ResumenScreen()
         }
 
-        // --- Pantalla Principal (con Bottom Nav) ---
         composable(AppRoute.Main.route) {
-            MainScreen()
+            MainScreen(usuarioViewModel = usuarioViewModel)
         }
     }
 

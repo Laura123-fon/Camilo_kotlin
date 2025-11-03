@@ -23,7 +23,6 @@ import com.example.app_definida.viewmodel.UsuarioViewModel
 fun ProfileScreen(
     usuarioViewModel: UsuarioViewModel
 ) {
-    val usuarioViewModel: UsuarioViewModel = viewModel()
     val estadoUsuario by usuarioViewModel.estado.collectAsState()
 
     Column(

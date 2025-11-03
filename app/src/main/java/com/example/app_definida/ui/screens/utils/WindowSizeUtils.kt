@@ -11,8 +11,6 @@ import androidx.compose.ui.platform.LocalContext
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 fun obtenerWindowSizeClass(): WindowSizeClass {
-    // Obtenemos el contexto actual de la actividad
     val activity = LocalContext.current as Activity
-    // Calculamos y devolvemos la clase de tamaño de la ventana
     return calculateWindowSizeClass(activity)
 }

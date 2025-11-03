@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.app_definida.model.CartItem
+import com.example.app_definida.navigation.AppRoute
 import com.example.app_definida.viewmodel.CartViewModel
 import com.example.app_definida.viewmodel.MainViewModel
 
@@ -46,13 +47,15 @@ fun CartScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
             Button(
-                onClick = { /* Lógica para ir a pagar */ },
+                onClick = {
+                    // Usa el MainViewModel para navegar a la pantalla de pago
+                    mainViewModel.navigateTo(AppRoute.Payment)
+                },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E8B57))
             ) {
                 Text("Proceder al Pago", color = Color.White)
-            }
-        }
+            }        }
     }
 }
 

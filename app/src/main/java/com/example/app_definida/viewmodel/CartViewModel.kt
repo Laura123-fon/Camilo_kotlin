@@ -11,18 +11,15 @@ import kotlinx.coroutines.flow.update
 class CartViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(CartUiState())
     val uiState = _uiState.asStateFlow()
-    // Añadido para consistencias
     fun agregarProducto(producto: Producto) {
         _uiState.update { currentState ->
             val itemsActuales = currentState.items.toMutableList()
             val itemExistente = itemsActuales.find { it.producto.id == producto.id }
 
             if (itemExistente != null) {
-                // Si el producto ya está, solo aumenta la cantidad
                 val itemIndex = itemsActuales.indexOf(itemExistente)
                 itemsActuales[itemIndex] = itemExistente.copy(cantidad = itemExistente.cantidad + 1)
             } else {
-                // Si es un producto nuevo, lo añade a la lista
                 itemsActuales.add(CartItem(producto = producto))
             }
 

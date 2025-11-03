@@ -4,8 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.ui.graphics.vector.ImageVector
-/**
-solo commit */
+
 sealed class AppRoute(
     val route: String,
     val title: String? = null,
@@ -25,6 +24,8 @@ sealed class AppRoute(
         title = "Perfil",
         icon = Icons.Default.Person
     )
+
+
 
     object Resumen : AppRoute(route = "resumen_screen")
 

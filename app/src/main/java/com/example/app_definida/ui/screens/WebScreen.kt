@@ -1,12 +1,9 @@
 package com.example.app_definida.ui.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,13 +13,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp // Comentado si no tienes la imagen
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 
 
 @Composable
 fun WebScreen(
-    onContinuar: (() -> Unit)? = null // <-- parámetro para navegar al registro
+    onContinuar: (() -> Unit)? = null
 ) {
     Column(
         modifier = Modifier

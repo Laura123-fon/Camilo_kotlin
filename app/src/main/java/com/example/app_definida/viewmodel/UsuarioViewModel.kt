@@ -11,7 +11,6 @@ data class FormErrors(
     val clave: String? = null,
     val direccion: String? = null
 )
-// Añadido para consistencias
 data class RegistroUiState(
     val nombre: String = "",
     val correo: String = "",
