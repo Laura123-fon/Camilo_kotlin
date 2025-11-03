@@ -1,69 +1,75 @@
 package com.example.app_definida.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import com.example.app_definida.viewmodel.MainViewModel
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import com.example.app_definida.navigation.AppRoute
+import com.example.app_definida.viewmodel.UsuarioViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun ProfileScreen(
-    navController: NavController,
-    viewModel: MainViewModel = viewModel()
-){
-    val items = listOf(AppRoute.Home, AppRoute.Profile)
-    var selectedItem by remember { mutableStateOf(1) }
+    usuarioViewModel: UsuarioViewModel
+) {
+    val usuarioViewModel: UsuarioViewModel = viewModel()
+    val estadoUsuario by usuarioViewModel.estado.collectAsState()
 
-    Scaffold(
-        bottomBar = {
-            NavigationBar {
-                items.forEachIndexed { index, screen ->
-                    NavigationBarItem(
-                        selected = selectedItem == index,
-                        onClick = {
-                            selectedItem = index
-                            viewModel.navigateTo(screen)
-                        },
-                        label = { Text(screen.route) },
-                        icon = {
-                            Icon(
-                                imageVector = if (screen == AppRoute.Home) Icons.Default.Home else Icons.Default.Person,
-                                contentDescription = screen.route
-                            )
-                        }
-                    )
-                }
-            }
-        }
-    ){innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text("Bienvenidos al perfil")
-        }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            imageVector = Icons.Default.Person,
+            contentDescription = "Icono de Perfil",
+            modifier = Modifier.size(100.dp),
+            tint = Color(0xFF2E8B57) // Verde Esmeralda
+        )
+        Spacer(Modifier.height(16.dp))
+        Text(
+            text = "Mi Perfil",
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(Modifier.height(24.dp))
+
+        ProfileInfoRow(label = "Nombre:", value = estadoUsuario.nombre)
+        ProfileInfoRow(label = "Correo:", value = estadoUsuario.correo)
+        ProfileInfoRow(label = "Dirección:", value = estadoUsuario.direccion)
+    }
+}
+
+@Composable
+private fun ProfileInfoRow(label: String, value: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = label,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+            modifier = Modifier.width(100.dp)
+        )
+        Text(
+            text = value,
+            fontSize = 16.sp
+        )
     }
 }

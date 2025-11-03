@@ -5,86 +5,11 @@ import com.example.app_definida.model.Producto
 class ProductoRepository {
     fun getProductos(): List<Producto> {
         return listOf(
-            // --- FRUTAS FRESCAS ---
-            Producto(
-                id = "FR001",
-                nombre = "Manzanas Fuji",
-                descripcion = "Frescas y crujientes, directo desde Los Andes.",
-                precio = 2500.0,
-                categoria = "Frutas Frescas",
-                origen = "Los Andes"
-            ),
-            Producto(
-                id = "FR002",
-                nombre = "Naranjas Valencia",
-                descripcion = "Jugosas y dulces, ideales para jugos naturales.",
-                precio = 2300.0,
-                categoria = "Frutas Frescas",
-                origen = "Valparaíso"
-            ),
-            Producto(
-                id = "FR003",
-                nombre = "Plátanos Cavendish",
-                descripcion = "Ricos en potasio, perfectos para un snack saludable.",
-                precio = 2100.0,
-                categoria = "Frutas Frescas",
-                origen = "Concepción"
-            ),
-
-            // --- VERDURAS ORGÁNICAS ---
-            Producto(
-                id = "VR001",
-                nombre = "Zanahorias Orgánicas",
-                descripcion = "Cultivadas sin pesticidas, llenas de vitaminas.",
-                precio = 1800.0,
-                categoria = "Verduras Orgánicas",
-                origen = "Nacimiento"
-            ),
-            Producto(
-                id = "VR002",
-                nombre = "Espinacas Frescas",
-                descripcion = "Tiernas y verdes, ideales para ensaladas o salteados.",
-                precio = 1600.0,
-                categoria = "Verduras Orgánicas",
-                origen = "Viña del Mar"
-            ),
-            Producto(
-                id = "VR003",
-                nombre = "Pimientos Tricolores",
-                descripcion = "Rojos, verdes y amarillos — una explosión de color y sabor.",
-                precio = 2700.0,
-                categoria = "Verduras Orgánicas",
-                origen = "Santiago"
-            ),
-
-            // --- PRODUCTOS ORGÁNICOS ---
-            Producto(
-                id = "PO001",
-                nombre = "Miel Orgánica",
-                descripcion = "Endulzante natural producido por apicultores locales.",
-                precio = 4500.0,
-                categoria = "Productos Orgánicos",
-                origen = "Valdivia"
-            ),
-            Producto(
-                id = "PO002",
-                nombre = "Quinua Orgánica",
-                descripcion = "Grano andino rico en proteínas y fibra, perfecto para comidas nutritivas.",
-                precio = 3800.0,
-                categoria = "Productos Orgánicos",
-                origen = "Villarica"
-            ),
-
-            // --- PRODUCTOS LÁCTEOS ---
-            Producto(
-                id = "PL001",
-                nombre = "Leche Entera",
-                descripcion = "Producida localmente, ideal para toda la familia.",
-                precio = 2200.0,
-                categoria = "Productos Lácteos",
-                origen = "Puerto Montt"
-            )
-
+            Producto("FR001", "Manzanas Fuji", "Crujientes y dulces, cultivadas en el Valle del Maule.", 1200.0, "Frutas Frescas", "https://picsum.photos/seed/FR001/200"),
+            Producto("VR001", "Zanahorias Orgánicas", "Excelente fuente de vitamina A y fibra.", 900.0, "Verduras Orgánicas", "https://picsum.photos/seed/VR001/200"),
+            Producto("PO001", "Miel Orgánica", "Pura y orgánica, de apicultores locales.", 5000.0, "Productos Orgánicos", "https://picsum.photos/seed/PO001/200"),
+            Producto("FR002", "Naranjas Valencia", "Jugosas y ricas en vitamina C.", 1000.0, "Frutas Frescas", "https://picsum.photos/seed/FR002/200"),
+            Producto("VR002", "Espinacas Frescas", "Nutritivas, perfectas para ensaladas.", 700.0, "Verduras Orgánicas", "https://picsum.photos/seed/VR002/200")
         )
     }
 }

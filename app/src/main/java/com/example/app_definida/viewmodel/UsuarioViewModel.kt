@@ -5,7 +5,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-// Datos para los errores del formulario (puedes dejarlos vacíos)
 data class FormErrors(
     val nombre: String? = null,
     val correo: String? = null,
@@ -13,7 +12,6 @@ data class FormErrors(
     val direccion: String? = null
 )
 
-// Estado del formulario de registro
 data class RegistroUiState(
     val nombre: String = "",
     val correo: String = "",
@@ -27,6 +25,7 @@ class UsuarioViewModel : ViewModel() {
 
     private val _estado = MutableStateFlow(RegistroUiState())
     val estado = _estado.asStateFlow()
+
 
     fun onNombreChange(nombre: String) {
         _estado.update { it.copy(nombre = nombre) }
@@ -49,8 +48,25 @@ class UsuarioViewModel : ViewModel() {
     }
 
     fun validarFormulario(): Boolean {
-        // Por ahora, simplemente retornamos true para que la app compile y navegue.
-        // Aquí puedes añadir tu lógica de validación más tarde.
-        return _estado.value.aceptaTerminos
+        val estadoActual = _estado.value
+        var esValido = true
+
+        val erroresNuevos = FormErrors(
+            nombre = if (estadoActual.nombre.isBlank()) "El nombre es requerido" else null,
+            correo = if (!android.util.Patterns.EMAIL_ADDRESS.matcher(estadoActual.correo).matches()) "El correo no es válido" else null,
+            clave = if (estadoActual.clave.length < 6) "La clave debe tener al menos 6 caracteres" else null
+        )
+
+        if (erroresNuevos.nombre != null || erroresNuevos.correo != null || erroresNuevos.clave != null) {
+            esValido = false
+        }
+
+        if (!estadoActual.aceptaTerminos) {
+            esValido = false
+        }
+
+        _estado.update { it.copy(errores = erroresNuevos) }
+
+        return esValido
     }
 }

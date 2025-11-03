@@ -15,12 +15,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.app_definida.viewmodel.UsuarioViewModel
 
 @Composable
-fun ResumenScreen(viewModel: UsuarioViewModel) {
-    // 1. OBSERVA EL ESTADO: Usamos `collectAsState` para obtener los datos del ViewModel.
-    //    Cualquier cambio en el estado se reflejará aquí automáticamente.
+fun ResumenScreen() {
+    val viewModel: UsuarioViewModel = viewModel()
     val estado by viewModel.estado.collectAsState()
 
     Column(
@@ -37,7 +37,7 @@ fun ResumenScreen(viewModel: UsuarioViewModel) {
         )
         Spacer(modifier = Modifier.height(24.dp))
 
-        Text(juuuuu
+        Text(
             text = "Bienvenido/a, ${estado.nombre}",
             style = MaterialTheme.typography.titleLarge
         )
@@ -45,12 +45,6 @@ fun ResumenScreen(viewModel: UsuarioViewModel) {
         Text(text = "Hemos registrado tu correo:")
         Text(
             text = estado.correo,
-            fontWeight = FontWeight.SemiBold
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "Tu dirección de envío es:")
-        Text(
-            text = estado.direccion,
             fontWeight = FontWeight.SemiBold
         )
     }
