@@ -27,14 +27,11 @@ import com.example.app_definida.viewmodel.UsuarioViewModel
 
 @Composable
 fun ProfileScreen(usuarioViewModel: UsuarioViewModel) {
-    // Observamos el estado completo del ViewModel (nombre, correo, foto, etc.)
     val estadoUsuario by usuarioViewModel.estado.collectAsState()
 
-    // 1. EL "LANZADOR" QUE ABRE LA GALERÍA DEL TELÉFONO
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri: Uri? ->
-            // Cuando el usuario elige una imagen, guardamos su Uri en el ViewModel.
             uri?.let {
                 usuarioViewModel.onFotoPerfilChange(it)
             }
@@ -48,7 +45,6 @@ fun ProfileScreen(usuarioViewModel: UsuarioViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // 2. ÁREA DE LA FOTO DE PERFIL "CLICKEABLE"
         Box(
             modifier = Modifier
                 .size(120.dp)
@@ -68,7 +64,6 @@ fun ProfileScreen(usuarioViewModel: UsuarioViewModel) {
                     tint = VerdeEsmeralda
                 )
             } else {
-                // Si hay foto, usa AsyncImage (de la librería Coil) para mostrarla.
                 AsyncImage(
                     model = estadoUsuario.fotoPerfilUri,
                     contentDescription = "Foto de perfil",
@@ -80,7 +75,6 @@ fun ProfileScreen(usuarioViewModel: UsuarioViewModel) {
 
         Spacer(Modifier.height(16.dp))
 
-        // Título de la pantalla
         Text(
             text = "Mi Perfil",
             style = MaterialTheme.typography.headlineMedium,
@@ -89,18 +83,13 @@ fun ProfileScreen(usuarioViewModel: UsuarioViewModel) {
 
         Spacer(Modifier.height(24.dp))
 
-        // 3. SECCIÓN PARA MOSTRAR LOS DATOS DEL REGISTRO
-        // Esta es la parte que habías perdido y que ahora restauramos.
         ProfileInfoRow(label = "Nombre:", value = estadoUsuario.nombre)
         ProfileInfoRow(label = "Correo:", value = estadoUsuario.correo)
         ProfileInfoRow(label = "Dirección:", value = estadoUsuario.direccion)
     }
 }
 
-/**
- * Componente reutilizable para mostrar una fila de información (Etiqueta: Valor).
- * (Esta función auxiliar estaba perfecta y la mantenemos).
- */
+
 @Composable
 private fun ProfileInfoRow(label: String, value: String) {
     Row(
