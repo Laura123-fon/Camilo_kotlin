@@ -14,21 +14,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.app_definida.model.CartItem
+import com.example.app_definida.ui.state.CartItem
 import com.example.app_definida.navigation.AppRoute
 import com.example.app_definida.viewmodel.CartViewModel
 import com.example.app_definida.viewmodel.MainViewModel
 
 @Composable
 fun CartScreen(
-    cartViewModel: CartViewModel, mainViewModel: MainViewModel
+    cartViewModel: CartViewModel,
+    mainViewModel: MainViewModel
 ) {
     val cartState by cartViewModel.uiState.collectAsState()
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
         if (cartState.items.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("Tu carrito está vacío", style = MaterialTheme.typography.titleLarge, color = Color.Gray)
+                Text("Tu carrito está vacío", style = MaterialTheme.typography.titleLarge)
             }
         } else {
             LazyColumn(modifier = Modifier.weight(1f)) {
@@ -48,14 +49,13 @@ fun CartScreen(
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = {
-                    // Usa el MainViewModel para navegar a la pantalla de pago
-                    mainViewModel.navigateTo(AppRoute.Payment)
-                },
+                    mainViewModel.navigateTo(AppRoute.Payment)                },
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E8B57))
+                colors = ButtonDefaults.buttonColors(containerColor = /* VerdeEsmeralda */ Color(0xFF2E8B57))
             ) {
                 Text("Proceder al Pago", color = Color.White)
-            }        }
+            }
+        }
     }
 }
 

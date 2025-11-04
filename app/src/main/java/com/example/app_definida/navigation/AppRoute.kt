@@ -5,31 +5,13 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.ui.graphics.vector.ImageVector
 
-sealed class AppRoute(
-    val route: String,
-    val title: String? = null,
-    val icon: ImageVector? = null
+sealed class AppRoute(val route: String
 ) {
+    object Web : AppRoute("web_screen")
+    object Registro : AppRoute("registro_screen")
 
-    object Registro : AppRoute(route = "registro_screen")
-
-    object Home : AppRoute(
-        route = "home_screen",
-        title = "Home",
-        icon = Icons.Default.Home
-    )
-
-    object Profile : AppRoute(
-        route = "profile_screen",
-        title = "Perfil",
-        icon = Icons.Default.Person
-    )
-
-
-
-    object Resumen : AppRoute(route = "resumen_screen")
-
+    object Main : AppRoute("main_screen")
     object Payment : AppRoute("payment_screen")
-    object Web : AppRoute(route = "web_screen")
-    object Main : AppRoute(route = "main_screen")
+
+    object Resumen : AppRoute("resumen_screen")
 }

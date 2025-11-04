@@ -1,16 +1,20 @@
 package com.example.app_definida.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.app_definida.model.CartItem
+
 import com.example.app_definida.model.Producto
+import com.example.app_definida.ui.state.CartItem
 import com.example.app_definida.ui.state.CartUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class CartViewModel : ViewModel() {
+
     private val _uiState = MutableStateFlow(CartUiState())
+
     val uiState = _uiState.asStateFlow()
+
     fun agregarProducto(producto: Producto) {
         _uiState.update { currentState ->
             val itemsActuales = currentState.items.toMutableList()
@@ -37,6 +41,7 @@ class CartViewModel : ViewModel() {
         actualizarTotales()
     }
 
+
     private fun actualizarTotales() {
         _uiState.update { currentState ->
             val subtotal = currentState.items.sumOf { it.producto.precio * it.cantidad }
@@ -45,3 +50,4 @@ class CartViewModel : ViewModel() {
         }
     }
 }
+

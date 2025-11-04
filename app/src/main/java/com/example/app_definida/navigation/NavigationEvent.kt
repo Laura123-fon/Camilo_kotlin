@@ -5,9 +5,9 @@ sealed class NavigationEvent {
         val appRoute: AppRoute,
         val popUpToRoute: AppRoute? = null,
         val inclusive: Boolean = false,
-        val singleTop: Boolean = true
+        val singleTop: Boolean = false
     ) : NavigationEvent()
 
-    data object PopBackStack : NavigationEvent()
-    data object NavigateUp : NavigationEvent()
+    object NavigateUp : NavigationEvent()
+    object PopBackStack : NavigationEvent()
 }

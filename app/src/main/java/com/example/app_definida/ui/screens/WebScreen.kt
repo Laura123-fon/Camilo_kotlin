@@ -29,7 +29,6 @@ fun WebScreen(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Imagen principal tipo banner
         AsyncImage(
             model = "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1200&q=60",
             contentDescription = "Huerto Hogar Banner",

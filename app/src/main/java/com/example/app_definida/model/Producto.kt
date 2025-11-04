@@ -1,6 +1,5 @@
 package com.example.app_definida.model
-/**
-solo commit */
+
 data class Producto(
     val id: String,
     val nombre: String,
@@ -8,4 +7,5 @@ data class Producto(
     val precio: Double,
     val categoria: String,
     val imagenUrl: String
+
 )

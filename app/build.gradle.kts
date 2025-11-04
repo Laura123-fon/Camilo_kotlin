@@ -6,9 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.app_definida"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.app_definida"
@@ -48,6 +46,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
+    implementation("androidx.datastore:datastore-preferences:1.1.1")
+
     implementation(libs.androidx.compose.material.icons.extended)
     implementation("io.coil-kt:coil-compose:2.6.0")
     implementation(libs.androidx.core.ktx)
@@ -60,7 +60,9 @@ dependencies {
     implementation(libs.androidx.compose.material3.window.size.class1)
 
     implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.datastore.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
+    implementation("io.coil-kt:coil-compose:2.6.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

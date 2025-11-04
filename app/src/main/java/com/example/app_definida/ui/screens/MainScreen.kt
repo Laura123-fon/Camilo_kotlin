@@ -22,11 +22,7 @@ import com.example.app_definida.viewmodel.CartViewModel
 import com.example.app_definida.viewmodel.MainViewModel
 import com.example.app_definida.viewmodel.UsuarioViewModel
 
-sealed class BottomBarRoute(
-    val route: String,
-    val title: String,
-    val icon: ImageVector
-) {
+sealed class BottomBarRoute(val route: String, val title: String, val icon: ImageVector) {
     object Home : BottomBarRoute("home", "Catálogo", Icons.Default.Home)
     object Profile : BottomBarRoute("profile", "Perfil", Icons.Default.Person)
     object Cart : BottomBarRoute("cart", "Carrito", Icons.Default.ShoppingCart)
@@ -34,7 +30,9 @@ sealed class BottomBarRoute(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(usuarioViewModel: UsuarioViewModel) {
+fun MainScreen(
+    usuarioViewModel: UsuarioViewModel
+) {
     val mainViewModel: MainViewModel = viewModel()
     val cartViewModel: CartViewModel = viewModel()
     val navController = rememberNavController()
@@ -44,7 +42,7 @@ fun MainScreen(usuarioViewModel: UsuarioViewModel) {
             TopAppBar(
                 title = { Text("HuertoHogar") },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF2E8B57),
+                    containerColor = Color(0xFF2E8B57), // VerdeEsmeralda
                     titleContentColor = Color.White
                 )
             )
@@ -73,21 +71,18 @@ fun MainScreen(usuarioViewModel: UsuarioViewModel) {
         }
     ) { innerPadding ->
         NavHost(
-            navController = navController,
+            navController,
             startDestination = BottomBarRoute.Home.route,
-            modifier = Modifier.padding(innerPadding)
+            Modifier.padding(innerPadding)
         ) {
             composable(BottomBarRoute.Home.route) {
                 HomeScreen(cartViewModel = cartViewModel)
             }
-
             composable(BottomBarRoute.Profile.route) {
                 ProfileScreen(usuarioViewModel = usuarioViewModel)
             }
-
             composable(BottomBarRoute.Cart.route) {
-                CartScreen(cartViewModel = cartViewModel, mainViewModel = mainViewModel)
-            }
+                CartScreen(cartViewModel = cartViewModel, mainViewModel = mainViewModel)            }
         }
     }
 }
