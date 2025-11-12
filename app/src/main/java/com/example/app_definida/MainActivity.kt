@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -20,21 +21,27 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.app_definida.navigation.AppRoute
 import com.example.app_definida.navigation.NavigationEvent
-import com.example.app_definida.repository.UserPreferencesRepository // -> 1. IMPORTA el Repositorio
+import com.example.app_definida.repository.UserPreferencesRepository
 import com.example.app_definida.ui.screens.MainScreen
 import com.example.app_definida.ui.screens.PaymentScreen
+import com.example.app_definida.ui.screens.PostScreen
 import com.example.app_definida.ui.screens.RegistroScreen
 import com.example.app_definida.ui.theme.APP_DEFINIDATheme
 import com.example.app_definida.viewmodel.MainViewModel
 import com.example.app_definida.viewmodel.UsuarioViewModel
 import kotlinx.coroutines.flow.collectLatest
 
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        WindowCompat.setDecorFitsSystemWindows(window,false)
+
         setContent {
             APP_DEFINIDATheme {
-                AppContent()
+                val postViewModel: com.example.app_definida.viewmodel.PostViewModel = viewModel()
+                PostScreen(viewModel = postViewModel)
             }
         }
     }
@@ -105,3 +112,5 @@ fun AppNavHost(
         }
     }
 }
+
+
