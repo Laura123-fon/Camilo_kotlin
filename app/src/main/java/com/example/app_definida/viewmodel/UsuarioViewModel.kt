@@ -6,6 +6,13 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
+
+data class Usuario(
+    val nombre: String,
+    val email: String,
+    val direccion: String
+)
+
 data class FormErrors(
     val nombre: String? = null,
     val correo: String? = null,
@@ -19,22 +26,35 @@ data class RegistroUiState(
     val clave: String = "",
     val direccion: String = "",
     val aceptaTerminos: Boolean = false,
-    val fotoPerfilUri: Uri? = null, // <- CAMPO AÑADIDO
+    val fotoPerfilUri: Uri? = null,
     val errores: FormErrors = FormErrors()
 )
+
 
 class UsuarioViewModel : ViewModel() {
 
     private val _estado = MutableStateFlow(RegistroUiState())
     val estado = _estado.asStateFlow()
 
+    private val _usuario = MutableStateFlow<Usuario?>(null)
+    val usuario = _usuario.asStateFlow()
+
     fun onNombreChange(nombre: String) { _estado.update { it.copy(nombre = nombre) } }
     fun onCorreoChange(correo: String) { _estado.update { it.copy(correo = correo) } }
     fun onClaveChange(clave: String) { _estado.update { it.copy(clave = clave) } }
     fun onDireccionChange(direccion: String) { _estado.update { it.copy(direccion = direccion) } }
     fun onAceptarTerminosChange(acepta: Boolean) { _estado.update { it.copy(aceptaTerminos = acepta) } }
-    fun onFotoPerfilChange(uri: Uri) {
-        _estado.update { it.copy(fotoPerfilUri = uri) }
+    fun onFotoPerfilChange(uri: Uri) { _estado.update { it.copy(fotoPerfilUri = uri) } }
+
+    fun onRegistroExitoso() {
+        val estadoActual = _estado.value
+        _usuario.update {
+            Usuario(
+                nombre = estadoActual.nombre,
+                email = estadoActual.correo,
+                direccion = estadoActual.direccion
+            )
+        }
     }
 
     fun validarFormulario(): Boolean {

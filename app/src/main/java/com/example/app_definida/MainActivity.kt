@@ -24,24 +24,22 @@ import com.example.app_definida.navigation.NavigationEvent
 import com.example.app_definida.repository.UserPreferencesRepository
 import com.example.app_definida.ui.screens.MainScreen
 import com.example.app_definida.ui.screens.PaymentScreen
-import com.example.app_definida.ui.screens.PostScreen
+import com.example.app_definida.ui.screens.PerfilScreen
 import com.example.app_definida.ui.screens.RegistroScreen
 import com.example.app_definida.ui.theme.APP_DEFINIDATheme
 import com.example.app_definida.viewmodel.MainViewModel
 import com.example.app_definida.viewmodel.UsuarioViewModel
 import kotlinx.coroutines.flow.collectLatest
 
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        WindowCompat.setDecorFitsSystemWindows(window,false)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
             APP_DEFINIDATheme {
-                val postViewModel: com.example.app_definida.viewmodel.PostViewModel = viewModel()
-                PostScreen(viewModel = postViewModel)
+                AppContent()
             }
         }
     }
@@ -104,13 +102,16 @@ fun AppNavHost(
         }
 
         composable(AppRoute.Main.route) {
-            MainScreen(usuarioViewModel = usuarioViewModel)
+            MainScreen(usuarioViewModel = usuarioViewModel, mainViewModel = mainViewModel)
         }
 
         composable(AppRoute.Payment.route) {
             PaymentScreen()
         }
+
+        composable(AppRoute.Perfil.route) { // Ruta añadida
+            // ¡Aquí está la corrección!
+            PerfilScreen(usuarioViewModel = usuarioViewModel)
+        }
     }
 }
-
-

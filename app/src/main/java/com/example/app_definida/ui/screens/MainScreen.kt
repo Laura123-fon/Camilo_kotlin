@@ -18,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.app_definida.navigation.AppRoute
 import com.example.app_definida.viewmodel.CartViewModel
 import com.example.app_definida.viewmodel.MainViewModel
 import com.example.app_definida.viewmodel.UsuarioViewModel
@@ -31,9 +32,9 @@ sealed class BottomBarRoute(val route: String, val title: String, val icon: Imag
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-    usuarioViewModel: UsuarioViewModel
+    usuarioViewModel: UsuarioViewModel,
+    mainViewModel: MainViewModel
 ) {
-    val mainViewModel: MainViewModel = viewModel()
     val cartViewModel: CartViewModel = viewModel()
     val navController = rememberNavController()
 
@@ -79,10 +80,11 @@ fun MainScreen(
                 HomeScreen(cartViewModel = cartViewModel)
             }
             composable(BottomBarRoute.Profile.route) {
-                ProfileScreen(usuarioViewModel = usuarioViewModel)
+                PerfilScreen(usuarioViewModel = usuarioViewModel)
             }
             composable(BottomBarRoute.Cart.route) {
-                CartScreen(cartViewModel = cartViewModel, mainViewModel = mainViewModel)            }
+                CartScreen(cartViewModel = cartViewModel, mainViewModel = mainViewModel)
+            }
         }
     }
 }

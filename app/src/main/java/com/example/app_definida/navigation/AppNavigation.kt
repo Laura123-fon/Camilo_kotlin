@@ -66,7 +66,8 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         }
 
         composable(AppRoute.Main.route) {
-            MainScreen(usuarioViewModel = usuarioViewModel)
+            MainScreen(usuarioViewModel = usuarioViewModel,
+                mainViewModel = mainViewModel )
         }
     }
 

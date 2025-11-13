@@ -80,8 +80,9 @@ fun RegistroScreen(
         Button(
             onClick = {
                 if (viewModel.validarFormulario()) {
+                    viewModel.onRegistroExitoso()
                     mainViewModel.navigateTo(
-                        route = AppRoute.Main, // Navega a la pantalla principal
+                        route = AppRoute.Main,
                         popUpToRoute = AppRoute.Registro,
                         inclusive = true
                     )
