@@ -2,23 +2,30 @@ package com.example.app_definida.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import com.example.app_definida.model.User
 import com.example.app_definida.navigation.AppRoute
+import com.example.app_definida.ui.login.LoginViewModel
 import com.example.app_definida.viewmodel.MainViewModel
-import com.example.app_definida.viewmodel.UsuarioViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun RegistroScreen(
-    viewModel: UsuarioViewModel,
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel,
+    loginViewModel: LoginViewModel
 ) {
-    val estado by viewModel.estado.collectAsState()
+    val scope = rememberCoroutineScope()
+
+    // Usamos estado local para evitar conflictos entre ViewModels
+    var nombre by remember { mutableStateOf("") }
+    var correo by remember { mutableStateOf("") }
+    var clave by remember { mutableStateOf("") }
+    var direccion by remember { mutableStateOf("") }
+    var aceptaTerminos by remember { mutableStateOf(false) }
 
     Column(
         Modifier
@@ -28,50 +35,34 @@ fun RegistroScreen(
     ) {
 
         OutlinedTextField(
-            value = estado.nombre,
-            onValueChange = viewModel::onNombreChange,
-            label = { Text("Nombre") },
-            isError = estado.errores.nombre != null,
-            supportingText = {
-                estado.errores.nombre?.let { Text(it, color = MaterialTheme.colorScheme.error) }
-            },
+            value = nombre,
+            onValueChange = { nombre = it },
+            label = { Text("Nombre de usuario") },
             modifier = Modifier.fillMaxWidth()
         )
         OutlinedTextField(
-            value = estado.correo,
-            onValueChange = viewModel::onCorreoChange,
+            value = correo,
+            onValueChange = { correo = it },
             label = { Text("Correo") },
-            isError = estado.errores.correo != null,
-            supportingText = {
-                estado.errores.correo?.let { Text(it, color = MaterialTheme.colorScheme.error) }
-            },
             modifier = Modifier.fillMaxWidth()
         )
         OutlinedTextField(
-            value = estado.clave,
-            onValueChange = viewModel::onClaveChange,
+            value = clave,
+            onValueChange = { clave = it },
             label = { Text("Clave") },
             visualTransformation = PasswordVisualTransformation(),
-            isError = estado.errores.clave != null,
-            supportingText = {
-                estado.errores.clave?.let { Text(it, color = MaterialTheme.colorScheme.error) }
-            },
             modifier = Modifier.fillMaxWidth()
         )
         OutlinedTextField(
-            value = estado.direccion,
-            onValueChange = viewModel::onDireccionChange,
+            value = direccion,
+            onValueChange = { direccion = it },
             label = { Text("Dirección") },
-            isError = estado.errores.direccion != null,
-            supportingText = {
-                estado.errores.direccion?.let { Text(it, color = MaterialTheme.colorScheme.error) }
-            },
             modifier = Modifier.fillMaxWidth()
         )
         Row(verticalAlignment = Alignment.CenterVertically) {
             Checkbox(
-                checked = estado.aceptaTerminos,
-                onCheckedChange = viewModel::onAceptarTerminosChange
+                checked = aceptaTerminos,
+                onCheckedChange = { aceptaTerminos = it }
             )
             Spacer(Modifier.width(8.dp))
             Text("Acepto los términos y condiciones")
@@ -79,16 +70,26 @@ fun RegistroScreen(
 
         Button(
             onClick = {
-                if (viewModel.validarFormulario()) {
-                    viewModel.onRegistroExitoso()
-                    mainViewModel.navigateTo(
-                        route = AppRoute.Main,
-                        popUpToRoute = AppRoute.Registro,
-                        inclusive = true
-                    )
+                // Podríamos añadir una validación simple aquí si es necesario
+                if (nombre.isNotBlank() && correo.isNotBlank() && clave.isNotBlank() && aceptaTerminos) {
+                    scope.launch {
+                        val newUser = User(
+                            username = nombre,
+                            email = correo,
+                            passwordHash = clave // Ahora usamos el estado local, que es consistente
+                        )
+                        loginViewModel.register(newUser)
+
+                        mainViewModel.navigateTo(
+                            route = AppRoute.Login,
+                            popUpToRoute = AppRoute.Registro,
+                            inclusive = true
+                        )
+                    }
                 }
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            enabled = nombre.isNotBlank() && correo.isNotBlank() && clave.isNotBlank() && aceptaTerminos
         ) {
             Text("Registrarse")
         }

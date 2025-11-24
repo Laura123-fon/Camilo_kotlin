@@ -1,18 +1,23 @@
 package com.example.app_definida.navigation
 
+import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.app_definida.ui.login.LoginScreen
+import com.example.app_definida.ui.login.LoginViewModel
+import com.example.app_definida.ui.login.LoginViewModelFactory
 import com.example.app_definida.ui.screens.MainScreen
 import com.example.app_definida.ui.screens.RegistroScreen
 import com.example.app_definida.ui.screens.ResumenScreen
 import com.example.app_definida.ui.screens.WebScreen
-import com.example.app_definida.viewmodel.UsuarioViewModel
 import com.example.app_definida.viewmodel.MainViewModel
+import com.example.app_definida.viewmodel.UsuarioViewModel
 import kotlinx.coroutines.flow.collectLatest
 
 
@@ -21,6 +26,9 @@ fun AppNavigation(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     val mainViewModel: MainViewModel = viewModel()
     val usuarioViewModel: UsuarioViewModel = viewModel()
+    val application = LocalContext.current.applicationContext as Application
+    val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(application))
+
 
     LaunchedEffect(key1 = Unit) {
         mainViewModel.navEvents.collectLatest { event ->
@@ -33,15 +41,25 @@ fun AppNavigation(modifier: Modifier = Modifier) {
                 }
                 is NavigationEvent.PopBackStack -> navController.popBackStack()
                 is NavigationEvent.NavigateUp -> navController.navigateUp()
+                is NavigationEvent.NavigateToHome -> navController.navigate(AppRoute.Main.route) {
+                    popUpTo(AppRoute.Login.route) { inclusive = true }
+                }
             }
         }
     }
 
     NavHost(
         navController = navController,
-        startDestination = AppRoute.Web.route,
+        startDestination = AppRoute.Login.route,
         modifier = modifier
     ) {
+        composable(AppRoute.Login.route) {
+            LoginScreen(
+                mainViewModel = mainViewModel,
+                viewModel = loginViewModel
+            )
+        }
+
         composable(AppRoute.Web.route) {
             WebScreen(
                 onContinuar = {
@@ -56,8 +74,8 @@ fun AppNavigation(modifier: Modifier = Modifier) {
 
         composable(AppRoute.Registro.route) {
             RegistroScreen(
-                viewModel = usuarioViewModel,
-                mainViewModel = mainViewModel
+                mainViewModel = mainViewModel,
+                loginViewModel = loginViewModel
             )
         }
 
@@ -66,8 +84,10 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         }
 
         composable(AppRoute.Main.route) {
-            MainScreen(usuarioViewModel = usuarioViewModel,
-                mainViewModel = mainViewModel )
+            MainScreen(
+                usuarioViewModel = usuarioViewModel,
+                mainViewModel = mainViewModel
+            )
         }
     }
 

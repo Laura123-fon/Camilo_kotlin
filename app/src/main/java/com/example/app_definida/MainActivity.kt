@@ -1,5 +1,6 @@
 package com.example.app_definida
 
+import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -22,6 +23,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.app_definida.navigation.AppRoute
 import com.example.app_definida.navigation.NavigationEvent
 import com.example.app_definida.repository.UserPreferencesRepository
+import com.example.app_definida.ui.login.LoginScreen
+import com.example.app_definida.ui.login.LoginViewModel
+import com.example.app_definida.ui.login.LoginViewModelFactory
 import com.example.app_definida.ui.screens.MainScreen
 import com.example.app_definida.ui.screens.PaymentScreen
 import com.example.app_definida.ui.screens.PerfilScreen
@@ -49,6 +53,8 @@ class MainActivity : ComponentActivity() {
 fun AppContent() {
     val navController = rememberNavController()
     val mainViewModel: MainViewModel = viewModel()
+    val application = LocalContext.current.applicationContext as Application
+    val loginViewModel: LoginViewModel = viewModel(factory = LoginViewModelFactory(application))
 
     val userPrefsRepository = UserPreferencesRepository(LocalContext.current)
     val sesionIniciada by userPrefsRepository.obtenerEstadoSesion().collectAsState(initial = null)
@@ -67,12 +73,13 @@ fun AppContent() {
         val startDestination = if (sesionIniciada == true) {
             AppRoute.Main.route
         } else {
-            AppRoute.Registro.route
+            AppRoute.Login.route
         }
 
         AppNavHost(
             navController = navController,
             mainViewModel = mainViewModel,
+            loginViewModel = loginViewModel,
             startDestination = startDestination
         )
     } else {
@@ -86,6 +93,7 @@ fun AppContent() {
 fun AppNavHost(
     navController: NavHostController,
     mainViewModel: MainViewModel,
+    loginViewModel: LoginViewModel,
     startDestination: String
 ) {
     val usuarioViewModel: UsuarioViewModel = viewModel()
@@ -94,10 +102,17 @@ fun AppNavHost(
         navController = navController,
         startDestination = startDestination
     ) {
+        composable(AppRoute.Login.route) {
+            LoginScreen(
+                mainViewModel = mainViewModel,
+                viewModel = loginViewModel
+            )
+        }
+
         composable(AppRoute.Registro.route) {
             RegistroScreen(
-                viewModel = usuarioViewModel,
-                mainViewModel = mainViewModel
+                mainViewModel = mainViewModel,
+                loginViewModel = loginViewModel
             )
         }
 
@@ -109,8 +124,7 @@ fun AppNavHost(
             PaymentScreen()
         }
 
-        composable(AppRoute.Perfil.route) { // Ruta añadida
-            // ¡Aquí está la corrección!
+        composable(AppRoute.Perfil.route) {
             PerfilScreen(usuarioViewModel = usuarioViewModel)
         }
     }
