@@ -1,4 +1,4 @@
-package com.example.app_definida.ui.login
+package com.example.app_definida.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -8,12 +8,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.app_definida.navigation.AppRoute
+import com.example.app_definida.viewmodel.LoginState
+import com.example.app_definida.viewmodel.LoginViewModel
 import com.example.app_definida.viewmodel.MainViewModel
 
 @Composable
 fun LoginScreen(
     mainViewModel: MainViewModel,
-    viewModel: LoginViewModel
+    viewModel: LoginViewModel,
+    onLoginSuccess: (Int) -> Unit
 ) {
     var email by remember { mutableStateOf("") } // Cambiado de username a email
     var password by remember { mutableStateOf("") }
@@ -39,7 +42,7 @@ fun LoginScreen(
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Correo") }, // Cambiado de "Usuario" a "Correo"
+            label = { Text("Correo") },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -56,7 +59,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { viewModel.login(email, password) }, // Pasando email en lugar de username
+            onClick = { viewModel.login(email, password) },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Iniciar Sesión")

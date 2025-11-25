@@ -9,7 +9,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.app_definida.model.User
 import com.example.app_definida.navigation.AppRoute
-import com.example.app_definida.ui.login.LoginViewModel
+import com.example.app_definida.viewmodel.LoginViewModel
 import com.example.app_definida.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
 
@@ -19,8 +19,6 @@ fun RegistroScreen(
     loginViewModel: LoginViewModel
 ) {
     val scope = rememberCoroutineScope()
-
-    // Usamos estado local para evitar conflictos entre ViewModels
     var nombre by remember { mutableStateOf("") }
     var correo by remember { mutableStateOf("") }
     var clave by remember { mutableStateOf("") }

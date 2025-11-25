@@ -14,7 +14,15 @@ class UserRepository(private val userDao: UserDao) {
         return userDao.getUserByEmail(email)
     }
 
+    fun getUserById(id: String): Flow<User?> {
+        return userDao.getUserById(id)
+    }
+
     suspend fun insertUser(user: User) {
         userDao.insertUser(user)
+    }
+
+    suspend fun updateUser(user: User) {
+        userDao.updateUser(user)
     }
 }

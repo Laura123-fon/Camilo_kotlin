@@ -30,7 +30,23 @@ import com.example.app_definida.ui.components.ImagenInteligente
 import com.example.app_definida.viewmodel.PerfilViewModel
 import com.example.app_definida.viewmodel.UsuarioViewModel
 import java.io.File
-
+//@Composable
+//fun PerfilScreen(usuarioViewModel: UsuarioViewModel) {
+//    // Recolectamos el estado del usuario del ViewModel
+//    val usuario by usuarioViewModel.usuario.collectAsState()
+//
+//    // Cuando el usuario se carga, la UI se actualiza automáticamente
+//    Column {
+//        if (usuario != null) {
+//            Text("Nombre: ${usuario!!.nombre}")
+//            Text("Email: ${usuario!!.email}")
+//            // ... Muestra el resto de los datos del perfil
+//        } else {
+//            // Muestra un indicador de carga mientras se busca al usuario
+//            CircularProgressIndicator()
+//        }
+//    }
+//}
 @Composable
 fun PerfilScreen(
     perfilViewModel: PerfilViewModel = viewModel(),

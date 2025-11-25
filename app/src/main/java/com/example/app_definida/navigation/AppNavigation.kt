@@ -9,9 +9,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.app_definida.ui.login.LoginScreen
-import com.example.app_definida.ui.login.LoginViewModel
-import com.example.app_definida.ui.login.LoginViewModelFactory
+import com.example.app_definida.ui.screens.LoginScreen
+import com.example.app_definida.viewmodel.LoginViewModel
+import com.example.app_definida.viewmodel.LoginViewModelFactory
 import com.example.app_definida.ui.screens.MainScreen
 import com.example.app_definida.ui.screens.RegistroScreen
 import com.example.app_definida.ui.screens.ResumenScreen
@@ -56,7 +56,13 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         composable(AppRoute.Login.route) {
             LoginScreen(
                 mainViewModel = mainViewModel,
-                viewModel = loginViewModel
+                viewModel = loginViewModel,
+                onLoginSuccess = { userId ->
+                    // 1. Cargamos el usuario en el ViewModel de Usuario
+                    usuarioViewModel.cargarUsuarioPorId(userId)
+                    // 2. Navegamos a la pantalla principal
+                    mainViewModel.navigateTo(AppRoute.Main, popUpToRoute = AppRoute.Login, inclusive = true)
+                }
             )
         }
 

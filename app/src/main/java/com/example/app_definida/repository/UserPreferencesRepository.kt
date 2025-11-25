@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -13,6 +14,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class UserPreferencesRepository(private val context: Context) {
 
     private val SESION_INICIADA = booleanPreferencesKey("sesion_iniciada")
+    private val USER_ID = stringPreferencesKey("user_id")
 
     suspend fun guardarEstadoSesion(sesionIniciada: Boolean) {
         context.dataStore.edit { preferences ->
@@ -23,6 +25,18 @@ class UserPreferencesRepository(private val context: Context) {
     fun obtenerEstadoSesion(): Flow<Boolean> {
         return context.dataStore.data.map { preferences ->
             preferences[SESION_INICIADA] ?: false
+        }
+    }
+
+    suspend fun guardarUserId(userId: String) {
+        context.dataStore.edit { preferences ->
+            preferences[USER_ID] = userId
+        }
+    }
+
+    fun obtenerUserId(): Flow<String?> {
+        return context.dataStore.data.map { preferences ->
+            preferences[USER_ID]
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.app_definida.ui.login
+package com.example.app_definida.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
@@ -34,21 +34,21 @@ class LoginViewModel(application: Application) : ViewModel() {
             } else if (user.passwordHash != password) {
                 _loginState.value = LoginState.Error("La contraseña es incorrecta.")
             } else {
-                _loginState.value = LoginState.Success
+                userPreferencesRepository.guardarUserId(user.id.toString())
+                userPreferencesRepository.guardarEstadoSesion(true)
+                _loginState.value = LoginState.Success(user)
+
             }
         }
     }
-
-    // Convertida a una función de suspensión para asegurar que la operación de escritura se complete
-    // antes de continuar con otro proceso (como la navegación).
-    suspend fun register(user: User) {
+   suspend fun register(user: User) {
         userRepository.insertUser(user)
     }
 }
 
 sealed class LoginState {
     object Idle : LoginState()
-    object Success : LoginState()
+    data class Success(val user: User) : LoginState() // Debe ser una data class con el usuario
     data class Error(val message: String) : LoginState()
 }
 

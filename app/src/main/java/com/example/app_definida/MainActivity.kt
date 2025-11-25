@@ -23,9 +23,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.app_definida.navigation.AppRoute
 import com.example.app_definida.navigation.NavigationEvent
 import com.example.app_definida.repository.UserPreferencesRepository
-import com.example.app_definida.ui.login.LoginScreen
-import com.example.app_definida.ui.login.LoginViewModel
-import com.example.app_definida.ui.login.LoginViewModelFactory
+import com.example.app_definida.ui.screens.LoginScreen
+import com.example.app_definida.viewmodel.LoginViewModel
+import com.example.app_definida.viewmodel.LoginViewModelFactory
 import com.example.app_definida.ui.screens.MainScreen
 import com.example.app_definida.ui.screens.PaymentScreen
 import com.example.app_definida.ui.screens.PerfilScreen
