@@ -40,6 +40,12 @@ class CartViewModel : ViewModel() {
         }
         actualizarTotales()
     }
+    
+    fun vaciarCarrito() {
+        _uiState.update { currentState ->
+             currentState.copy(items = emptyList(), subtotal = 0.0, total = 0.0)
+        }
+    }
 
 
     private fun actualizarTotales() {
@@ -50,4 +56,3 @@ class CartViewModel : ViewModel() {
         }
     }
 }
-

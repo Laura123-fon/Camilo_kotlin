@@ -27,6 +27,7 @@ import com.example.app_definida.ui.screens.PaymentScreen
 import com.example.app_definida.ui.screens.PerfilScreen
 import com.example.app_definida.ui.screens.RegistroScreen
 import com.example.app_definida.ui.theme.APP_DEFINIDATheme
+import com.example.app_definida.viewmodel.CartViewModel
 import com.example.app_definida.viewmodel.MainViewModel
 import com.example.app_definida.viewmodel.UsuarioViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -89,6 +90,7 @@ fun AppNavHost(
     startDestination: String
 ) {
     val usuarioViewModel: UsuarioViewModel = viewModel()
+    val cartViewModel: CartViewModel = viewModel() // Shared CartViewModel
 
     NavHost(
         navController = navController,
@@ -102,15 +104,17 @@ fun AppNavHost(
         }
 
         composable(AppRoute.Main.route) {
-            MainScreen(usuarioViewModel = usuarioViewModel, mainViewModel = mainViewModel)
+            MainScreen(usuarioViewModel = usuarioViewModel, mainViewModel = mainViewModel, cartViewModel = cartViewModel)
         }
 
         composable(AppRoute.Payment.route) {
-            PaymentScreen()
+            PaymentScreen(
+                cartViewModel = cartViewModel,
+                onBackClick = { navController.popBackStack() }
+            )
         }
 
-        composable(AppRoute.Perfil.route) { // Ruta añadida
-            // ¡Aquí está la corrección!
+        composable(AppRoute.Perfil.route) {
             PerfilScreen(usuarioViewModel = usuarioViewModel)
         }
     }

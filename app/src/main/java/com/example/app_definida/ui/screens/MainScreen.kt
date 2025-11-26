@@ -33,9 +33,9 @@ sealed class BottomBarRoute(val route: String, val title: String, val icon: Imag
 @Composable
 fun MainScreen(
     usuarioViewModel: UsuarioViewModel,
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel,
+    cartViewModel: CartViewModel = viewModel() // Add default value to be safe, but it will be passed from MainActivity
 ) {
-    val cartViewModel: CartViewModel = viewModel()
     val navController = rememberNavController()
 
     Scaffold(

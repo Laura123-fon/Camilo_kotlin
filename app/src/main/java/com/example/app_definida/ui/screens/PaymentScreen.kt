@@ -5,11 +5,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,15 +30,29 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun PaymentScreen() {
-    val cartViewModel: CartViewModel = viewModel()
+fun PaymentScreen(
+    cartViewModel: CartViewModel,
+    onBackClick: () -> Unit
+) {
     val cartState by cartViewModel.uiState.collectAsState()
+    
+    // Guardamos una copia de los items para mostrar en el ticket incluso después de vaciar el carrito
+    val ticketItems = remember { mutableStateOf(cartState.items) }
+    val ticketSubtotal = remember { mutableStateOf(cartState.subtotal) }
+    val ticketTotal = remember { mutableStateOf(cartState.total) }
 
     // Fecha actual
     val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
     val currentDate = dateFormat.format(Date())
     val currentTime = timeFormat.format(Date())
+
+    DisposableEffect(Unit) {
+        onDispose {
+            // Se ejecuta cuando la pantalla deja de ser visible
+             cartViewModel.vaciarCarrito()
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -43,6 +61,20 @@ fun PaymentScreen() {
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Botón de volver
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start
+        ) {
+            IconButton(onClick = onBackClick) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = "Volver",
+                    tint = Color.Black
+                )
+            }
+        }
+
         Icon(
             imageVector = Icons.Filled.CheckCircle,
             contentDescription = "Pago Exitoso",
@@ -76,7 +108,7 @@ fun PaymentScreen() {
             ) {
                 // Encabezado Ticket
                 Text(
-                    text = "SUPERMERCADO LIDER", // Ejemplo genérico, puedes poner tu nombre de app
+                    text = "HuertoHogar", // Ejemplo genérico, puedes poner tu nombre de app
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.Monospace
@@ -106,8 +138,8 @@ fun PaymentScreen() {
                  HorizontalDivider(thickness = 1.dp, color = Color.Black)
                  Spacer(modifier = Modifier.height(8.dp))
                  
-                // Items
-                cartState.items.forEach { cartItem ->
+                // Items - Usamos ticketItems para mostrar lo que se compró aunque el carrito se vacíe
+                ticketItems.value.forEach { cartItem ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -143,12 +175,12 @@ fun PaymentScreen() {
                 // Totales estilo ticket
                 
                 Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-                    TicketTotalRow("SUBTOTAL", cartState.subtotal)
+                    TicketTotalRow("SUBTOTAL", ticketSubtotal.value)
                     // IVA 19% (Asumido incluido o desglose según se quiera, aquí simulando la imagen)
                     // La imagen muestra TOTAL AFECTO, EXENTO, IVA. Simplificaremos a lo visual.
                     // Calculando valores simulados de IVA sobre el total para mostrar parecido
-                    val neto = cartState.total / 1.19
-                    val iva = cartState.total - neto
+                    val neto = ticketTotal.value / 1.19
+                    val iva = ticketTotal.value - neto
                     
                     TicketTotalRow("TOTAL AFECTO $", neto)
                     TicketTotalRow("TOTAL EXENTO $", 0.0) // Si hubiera productos exentos
@@ -167,7 +199,7 @@ fun PaymentScreen() {
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            "%,.0f".format(cartState.total), 
+                            "%,.0f".format(ticketTotal.value), 
                             style = MaterialTheme.typography.titleMedium, 
                             fontFamily = FontFamily.Monospace,
                             fontWeight = FontWeight.Bold
@@ -186,7 +218,7 @@ fun PaymentScreen() {
                     textAlign = TextAlign.Start
                 )
                  Text(
-                    text = "NUMERO DE ARTIC VEND = ${cartState.items.sumOf { it.cantidad }}", 
+                    text = "NUMERO DE ARTIC VEND = ${ticketItems.value.sumOf { it.cantidad }}", 
                     style = MaterialTheme.typography.bodyMedium,
                     fontFamily = FontFamily.Monospace,
                     modifier = Modifier.fillMaxWidth(),
