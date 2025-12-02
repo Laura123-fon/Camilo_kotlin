@@ -22,7 +22,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.app_definida.ui.theme.GrisMedio
 import com.example.app_definida.viewmodel.CartViewModel
 import java.text.SimpleDateFormat
@@ -108,7 +107,7 @@ fun PaymentScreen(
             ) {
                 // Encabezado Ticket
                 Text(
-                    text = "HuertoHogar", // Ejemplo genérico, puedes poner tu nombre de app
+                    text = "HuertoHogar",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.Monospace
@@ -148,14 +147,13 @@ fun PaymentScreen(
                     ) {
                         // Nombre producto + cantidad
                         Column(modifier = Modifier.weight(1f)) {
-                             // Código simulado
                             Text(
-                                text = "000${cartItem.producto.id} ${cartItem.producto.nombre.uppercase()}",
+                                text = "000${cartItem.id} ${cartItem.nombre.uppercase()}",
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontFamily = FontFamily.Monospace
                             )
                             Text(
-                                text = "${cartItem.cantidad} UN x ${"%,.0f".format(cartItem.producto.precio)}",
+                                text = "${cartItem.cantidad} UN x ${"%,.0f".format(cartItem.precio)}",
                                 style = MaterialTheme.typography.bodySmall,
                                 fontFamily = FontFamily.Monospace
                             )
@@ -163,7 +161,7 @@ fun PaymentScreen(
                         
                         // Total Item
                         Text(
-                            text = "$ ${"%,.0f".format(cartItem.producto.precio * cartItem.cantidad)}",
+                            text = "$ ${"%,.0f".format(cartItem.precio * cartItem.cantidad)}",
                             style = MaterialTheme.typography.bodyMedium,
                             fontFamily = FontFamily.Monospace,
                             fontWeight = FontWeight.Bold
@@ -176,15 +174,13 @@ fun PaymentScreen(
                 
                 Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
                     TicketTotalRow("SUBTOTAL", ticketSubtotal.value)
-                    // IVA 19% (Asumido incluido o desglose según se quiera, aquí simulando la imagen)
-                    // La imagen muestra TOTAL AFECTO, EXENTO, IVA. Simplificaremos a lo visual.
-                    // Calculando valores simulados de IVA sobre el total para mostrar parecido
+
                     val neto = ticketTotal.value / 1.19
                     val iva = ticketTotal.value - neto
                     
                     TicketTotalRow("TOTAL AFECTO $", neto)
-                    TicketTotalRow("TOTAL EXENTO $", 0.0) // Si hubiera productos exentos
-                    TicketTotalRow("TOTAL IVA(19.0%)$", iva)
+                    TicketTotalRow("TOTAL EXENTO $", 0.0)
+                    TicketTotalRow("TOTAL IVA(19.0%)", iva)
                     
                     Spacer(modifier = Modifier.height(8.dp))
                     

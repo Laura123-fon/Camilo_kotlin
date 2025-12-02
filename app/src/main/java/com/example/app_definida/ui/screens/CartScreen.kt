@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.app_definida.ui.state.CartItem
+import com.example.app_definida.model.CartProduct
 import com.example.app_definida.navigation.AppRoute
 import com.example.app_definida.viewmodel.CartViewModel
 import com.example.app_definida.viewmodel.MainViewModel
@@ -34,7 +34,7 @@ fun CartScreen(
         } else {
             LazyColumn(modifier = Modifier.weight(1f)) {
                 items(cartState.items) { cartItem ->
-                    CartItemRow(cartItem = cartItem, viewModel = cartViewModel)
+                    CartItemRow(cartProduct = cartItem, viewModel = cartViewModel)
                     Divider()
                 }
             }
@@ -49,28 +49,30 @@ fun CartScreen(
             Spacer(modifier = Modifier.height(16.dp))
             Button(
                 onClick = {
-                    mainViewModel.navigateTo(AppRoute.Payment)                },
+                    // ¡SOLUCIÓN! Usar la ruta correcta que tú definiste.
+                    mainViewModel.navigateTo(AppRoute.Payment)
+                },
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = /* VerdeEsmeralda */ Color(0xFF2E8B57))
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF2E8B57))
             ) {
-                Text("Proceder al Pago", color = Color.White)
+                Text("Finalizar Compra", color = Color.White)
             }
         }
     }
 }
 
 @Composable
-fun CartItemRow(cartItem: CartItem, viewModel: CartViewModel) {
+fun CartItemRow(cartProduct: CartProduct, viewModel: CartViewModel) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(cartItem.producto.nombre, fontWeight = FontWeight.Bold)
-            Text("Cantidad: ${cartItem.cantidad}")
-            Text("Precio: $${"%,.0f".format(cartItem.producto.precio * cartItem.cantidad)} CLP", color = Color.Gray)
+            Text(cartProduct.nombre, fontWeight = FontWeight.Bold)
+            Text("Cantidad: ${cartProduct.cantidad}")
+            Text("Precio: $${String.format("%,.0f", cartProduct.precio * cartProduct.cantidad)} CLP", color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
-        IconButton(onClick = { viewModel.eliminarProducto(cartItem) }) {
+        IconButton(onClick = { viewModel.eliminarProducto(cartProduct) }) {
             Icon(Icons.Default.Delete, contentDescription = "Eliminar productos", tint = MaterialTheme.colorScheme.error)
         }
     }
@@ -81,16 +83,16 @@ fun ResumenCompra(subtotal: Double, envio: Double, total: Double) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text("Subtotal:")
-            Text("$${"%,.0f".format(subtotal)} CLP")
+            Text("$${String.format("%,.0f", subtotal)} CLP")
         }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text("Envío:")
-            Text("$${"%,.0f".format(envio)} CLP")
+            Text("$${String.format("%,.0f", envio)} CLP")
         }
         Divider(modifier = Modifier.padding(vertical = 8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text("Total:", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
-            Text("$${"%,.0f".format(total)} CLP", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium, color = Color(0xFF2E8B57))
+            Text("$${String.format("%,.0f", total)} CLP", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium, color = Color(0xFF2E8B57))
         }
     }
 }

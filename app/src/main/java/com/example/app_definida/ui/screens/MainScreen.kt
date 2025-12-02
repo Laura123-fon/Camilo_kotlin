@@ -11,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -19,9 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.app_definida.navigation.AppRoute
-import com.example.app_definida.viewmodel.CartViewModel
-import com.example.app_definida.viewmodel.MainViewModel
-import com.example.app_definida.viewmodel.UsuarioViewModel
+import com.example.app_definida.viewmodel.*
 
 sealed class BottomBarRoute(val route: String, val title: String, val icon: ImageVector) {
     object Home : BottomBarRoute("home", "Catálogo", Icons.Default.Home)
@@ -34,7 +31,10 @@ sealed class BottomBarRoute(val route: String, val title: String, val icon: Imag
 fun MainScreen(
     usuarioViewModel: UsuarioViewModel,
     mainViewModel: MainViewModel,
-    cartViewModel: CartViewModel = viewModel() // Add default value to be safe, but it will be passed from MainActivity
+    cartViewModel: CartViewModel,
+    productViewModel: ProductViewModel,
+    authViewModel: AuthViewModel, // <-- Nuevo parámetro
+    onLogout: () -> Unit // <-- Nuevo parámetro
 ) {
     val navController = rememberNavController()
 
@@ -77,10 +77,15 @@ fun MainScreen(
             Modifier.padding(innerPadding)
         ) {
             composable(BottomBarRoute.Home.route) {
-                HomeScreen(cartViewModel = cartViewModel)
+                HomeScreen(cartViewModel = cartViewModel, productViewModel = productViewModel)
             }
             composable(BottomBarRoute.Profile.route) {
-                PerfilScreen(usuarioViewModel = usuarioViewModel)
+                // Pasar las nuevas dependencias a ProfileScreen
+                ProfileScreen(
+                    usuarioViewModel = usuarioViewModel,
+                    authViewModel = authViewModel,
+                    onLogout = onLogout
+                )
             }
             composable(BottomBarRoute.Cart.route) {
                 CartScreen(cartViewModel = cartViewModel, mainViewModel = mainViewModel)
