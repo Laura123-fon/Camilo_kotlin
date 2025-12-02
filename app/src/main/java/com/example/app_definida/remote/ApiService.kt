@@ -18,6 +18,6 @@ interface ApiService {
     suspend fun register(@Body authRequest: AuthRequest): Response<Unit>
 
     // --- Product Endpoints ---
-    @GET("api/products")
+    @GET("api/products/getAllProducts")
     suspend fun getProducts(): Response<List<Product>>
 }
