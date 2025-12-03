@@ -23,7 +23,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    // Llamamos a AppNavigation, que ahora contiene toda la lógica de la app
                     AppNavigation()
                 }
             }

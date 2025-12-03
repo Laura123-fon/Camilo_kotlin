@@ -86,6 +86,7 @@ fun MainScreen(
                     authViewModel = authViewModel,
                     onLogout = onLogout
                 )
+
             }
             composable(BottomBarRoute.Cart.route) {
                 CartScreen(cartViewModel = cartViewModel, mainViewModel = mainViewModel)

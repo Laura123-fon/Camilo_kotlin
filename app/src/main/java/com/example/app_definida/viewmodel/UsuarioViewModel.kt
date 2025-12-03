@@ -21,6 +21,7 @@ class UsuarioViewModel(private val userManager: UserManager) : ViewModel() {
     fun loadUserProfile() {
         viewModelScope.launch {
             _userProfile.value = userManager.getUserProfile()
+            print(_userProfile)
         }
     }
 }
