@@ -88,6 +88,9 @@ fun ProductoCard(product: Product, onAddToCart: () -> Unit) {
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF333333)
                 )
+
+
+
                 Text(
                     text = product.categoria,
                     style = MaterialTheme.typography.bodySmall,

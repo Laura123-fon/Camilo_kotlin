@@ -10,5 +10,6 @@ data class CartProduct(
     val nombre: String,
     val precio: Double,
     val imagenUrl: String,
-    val cantidad: Int
+    val cantidad: Int,
+    val descuento: Double
 )

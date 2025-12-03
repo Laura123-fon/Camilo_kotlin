@@ -42,6 +42,7 @@ fun CartScreen(
             Spacer(modifier = Modifier.height(16.dp))
             ResumenCompra(
                 subtotal = cartState.subtotal,
+                descuento = cartState.descuento,
                 envio = cartState.costoEnvio,
                 total = cartState.total
             )
@@ -79,11 +80,17 @@ fun CartItemRow(cartProduct: CartProduct, viewModel: CartViewModel) {
 }
 
 @Composable
-fun ResumenCompra(subtotal: Double, envio: Double, total: Double) {
+fun ResumenCompra(subtotal: Double, descuento: Double, envio: Double, total: Double) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text("Subtotal:")
             Text("$${String.format("%,.0f", subtotal)} CLP")
+        }
+        if (descuento > 0) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Text("Descuento:", color = Color(0xFF2E8B57))
+                Text("-$${String.format("%,.0f", descuento)} CLP", color = Color(0xFF2E8B57))
+            }
         }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text("Envío:")
