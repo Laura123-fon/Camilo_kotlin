@@ -3,6 +3,15 @@ package com.example.app_definida.ui.screens
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import com.example.app_definida.data.UserProfile
+import com.example.app_definida.ui.auth.AuthState
+import com.example.app_definida.ui.auth.AuthViewModel
+import com.example.app_definida.ui.cart.CartUiState
+import com.example.app_definida.ui.cart.CartViewModel
+import com.example.app_definida.ui.main.MainScreen
+import com.example.app_definida.ui.main.MainViewModel
+import com.example.app_definida.ui.product.ProductUiState
+import com.example.app_definida.ui.product.ProductViewModel
+import com.example.app_definida.ui.profile.UsuarioViewModel
 
 import com.example.app_definida.viewmodel.*
 import io.mockk.every

@@ -2,9 +2,9 @@ package com.actividad_22.screen
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
-import com.example.app_definida.ui.screens.LoginScreen
-import com.example.app_definida.viewmodel.AuthViewModel
-import com.example.app_definida.viewmodel.AuthState
+import com.example.app_definida.ui.auth.LoginScreen
+import com.example.app_definida.ui.auth.AuthViewModel
+import com.example.app_definida.ui.auth.AuthState
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
