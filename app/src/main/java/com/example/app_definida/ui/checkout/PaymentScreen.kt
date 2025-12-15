@@ -28,8 +28,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -49,10 +47,6 @@ fun PaymentScreen(
     onBackClick: () -> Unit
 ) {
     val cartState by cartViewModel.uiState.collectAsState()
-
-    val ticketItems = remember { mutableStateOf(cartState.items) }
-    val ticketSubtotal = remember { mutableStateOf(cartState.subtotal) }
-    val ticketTotal = remember { mutableStateOf(cartState.total) }
 
     val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
     val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
@@ -145,7 +139,7 @@ fun PaymentScreen(
                  HorizontalDivider(thickness = 1.dp, color = Color.Black)
                  Spacer(modifier = Modifier.height(8.dp))
                  
-                ticketItems.value.forEach { cartItem ->
+                cartState.items.forEach { cartItem ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -159,14 +153,14 @@ fun PaymentScreen(
                                 fontFamily = FontFamily.Monospace
                             )
                             Text(
-                                text = "${cartItem.cantidad} UN x ${"%,.0f".format(cartItem.producto.precio)}",
+                                text = "${cartItem.cantidad} UN x $${String.format(Locale.getDefault(), "%,.0f", cartItem.producto.precio)}",
                                 style = MaterialTheme.typography.bodySmall,
                                 fontFamily = FontFamily.Monospace
                             )
                         }
                         
                         Text(
-                            text = "$ ${"%,.0f".format(cartItem.producto.precio * cartItem.cantidad)}",
+                            text = "$ ${String.format(Locale.getDefault(), "%,.0f", cartItem.producto.precio * cartItem.cantidad)}",
                             style = MaterialTheme.typography.bodyMedium,
                             fontFamily = FontFamily.Monospace,
                             fontWeight = FontWeight.Bold
@@ -177,10 +171,10 @@ fun PaymentScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 
                 Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-                    TicketTotalRow("SUBTOTAL", ticketSubtotal.value)
+                    TicketTotalRow("SUBTOTAL", cartState.subtotal)
 
-                    val neto = ticketTotal.value / 1.19
-                    val iva = ticketTotal.value - neto
+                    val neto = cartState.total / 1.19
+                    val iva = cartState.total - neto
                     
                     TicketTotalRow("TOTAL AFECTO $", neto)
                     TicketTotalRow("TOTAL EXENTO $", 0.0)
@@ -199,7 +193,7 @@ fun PaymentScreen(
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            "%,.0f".format(ticketTotal.value), 
+                            String.format(Locale.getDefault(), "%,.0f", cartState.total), 
                             style = MaterialTheme.typography.titleMedium, 
                             fontFamily = FontFamily.Monospace,
                             fontWeight = FontWeight.Bold
@@ -217,7 +211,7 @@ fun PaymentScreen(
                     textAlign = TextAlign.Start
                 )
                  Text(
-                    text = "NUMERO DE ARTIC VEND = ${ticketItems.value.sumOf { it.cantidad }}", 
+                    text = "NUMERO DE ARTIC VEND = ${cartState.items.sumOf { it.cantidad }}", 
                     style = MaterialTheme.typography.bodyMedium,
                     fontFamily = FontFamily.Monospace,
                     modifier = Modifier.fillMaxWidth(),
@@ -264,7 +258,7 @@ fun TicketTotalRow(titulo: String, valor: Double) {
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
-            text = "%,.0f".format(valor),
+            text = String.format(Locale.getDefault(), "%,.0f", valor),
             style = MaterialTheme.typography.bodyMedium,
             fontFamily = FontFamily.Monospace,
             textAlign = TextAlign.End

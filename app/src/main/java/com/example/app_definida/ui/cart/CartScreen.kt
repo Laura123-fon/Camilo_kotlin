@@ -15,7 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -28,8 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.app_definida.data.model.CartProduct
-
+import java.util.Locale
 
 @Composable
 fun CartScreen(
@@ -46,8 +45,8 @@ fun CartScreen(
         } else {
             LazyColumn(modifier = Modifier.weight(1f)) {
                 items(cartState.items) { cartItem ->
-                    CartItemRow(cartProduct = cartItem.producto, viewModel = cartViewModel)
-                    Divider()
+                    CartItemRow(cartItem = cartItem, viewModel = cartViewModel)
+                    HorizontalDivider()
                 }
             }
 
@@ -70,17 +69,17 @@ fun CartScreen(
 }
 
 @Composable
-fun CartItemRow(cartProduct: CartProduct, viewModel: CartViewModel) {
+fun CartItemRow(cartItem: CartItem, viewModel: CartViewModel) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(cartProduct.nombre, fontWeight = FontWeight.Bold)
-            Text("Cantidad: ${cartProduct.cantidad}")
-            Text("Precio: $${String.format("%,.0f", cartProduct.precio * cartProduct.cantidad)} CLP", color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(cartItem.producto.nombre, fontWeight = FontWeight.Bold)
+            Text("Cantidad: ${cartItem.cantidad}")
+            Text("Precio: $${String.format(Locale.getDefault(), "%,.0f", cartItem.producto.precio * cartItem.cantidad)} CLP", color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
-        IconButton(onClick = { viewModel.eliminarProducto(cartProduct) }) {
+        IconButton(onClick = { viewModel.eliminarProducto(cartItem) }) {
             Icon(Icons.Default.Delete, contentDescription = "Eliminar productos", tint = MaterialTheme.colorScheme.error)
         }
     }
@@ -92,16 +91,16 @@ fun ResumenCompra(subtotal: Double, total: Double) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text("Subtotal:")
-            Text("$${String.format("%,.0f", subtotal)} CLP")
+            Text("$${String.format(Locale.getDefault(), "%,.0f", subtotal)} CLP")
         }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text("Envío:")
-            Text("$${String.format("%,.0f", costoEnvio)} CLP")
+            Text("$${String.format(Locale.getDefault(), "%,.0f", costoEnvio)} CLP")
         }
-        Divider(modifier = Modifier.padding(vertical = 8.dp))
+        HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text("Total:", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
-            Text("$${String.format("%,.0f", total)} CLP", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium, color = Color(0xFF2E8B57))
+            Text("$${String.format(Locale.getDefault(), "%,.0f", total)} CLP", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium, color = Color(0xFF2E8B57))
         }
     }
 }

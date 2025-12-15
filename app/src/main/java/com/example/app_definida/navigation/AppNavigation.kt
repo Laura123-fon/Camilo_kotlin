@@ -18,15 +18,14 @@ import com.example.app_definida.ui.auth.AuthViewModel
 import com.example.app_definida.ui.auth.AuthViewModelFactory
 import com.example.app_definida.ui.auth.LoginScreen
 import com.example.app_definida.ui.auth.RegisterScreen
+import com.example.app_definida.ui.auth.ResumenScreen
 import com.example.app_definida.ui.cart.CartScreen
 import com.example.app_definida.ui.cart.CartViewModel
 import com.example.app_definida.ui.cart.CartViewModelFactory
 import com.example.app_definida.ui.checkout.PaymentScreen
-import com.example.app_definida.ui.checkout.ResumenScreen
 import com.example.app_definida.ui.main.BottomBarRoute
 import com.example.app_definida.ui.main.MainScreen
 import com.example.app_definida.ui.main.MainViewModel
-import com.example.app_definida.ui.main.WebScreen
 import com.example.app_definida.ui.product.ProductCatalogScreen
 import com.example.app_definida.ui.product.ProductViewModel
 import com.example.app_definida.ui.product.ProductViewModelFactory
@@ -39,6 +38,7 @@ fun AppNavigation(modifier: Modifier = Modifier) {
     val appNavController = rememberNavController()
     val context = LocalContext.current
 
+    // --- Restauramos todas las dependencias ---
     val tokenManager = TokenManager(context)
     val userManager = UserManager(context)
     val apiService = RetrofitClient.create(context)
@@ -50,8 +50,6 @@ fun AppNavigation(modifier: Modifier = Modifier) {
     val productViewModel: ProductViewModel = viewModel(factory = ProductViewModelFactory(productRepository))
 
     val usuarioViewModel: UsuarioViewModel = viewModel(factory = UsuarioViewModelFactory(userManager))
-
-    val mainViewModel: MainViewModel = viewModel()
     
     val db = AppDatabase.getDatabase(context)
     val cartDao = db.cartProductDao()
@@ -59,19 +57,9 @@ fun AppNavigation(modifier: Modifier = Modifier) {
 
     NavHost(
         navController = appNavController,
-        startDestination = AppRoute.Web.route,
+        startDestination = AppRoute.Login.route, // <-- ¡NUEVO PUNTO DE INICIO!
         modifier = modifier
     ) {
-        composable(AppRoute.Web.route) {
-            WebScreen(
-                onContinuar = {
-                    appNavController.navigate(AppRoute.Login.route) {
-                        popUpTo(AppRoute.Web.route) { inclusive = true }
-                    }
-                }
-            )
-        }
-
         composable(AppRoute.Login.route) {
             LoginScreen(
                 authViewModel = authViewModel,
@@ -88,9 +76,7 @@ fun AppNavigation(modifier: Modifier = Modifier) {
             RegisterScreen(
                 authViewModel = authViewModel,
                 onRegisterSuccess = {
-                    appNavController.navigate(AppRoute.Login.route) {
-                        popUpTo(AppRoute.Registro.route) { inclusive = true }
-                    }
+                    appNavController.navigate(AppRoute.Resumen.route)
                 },
                 onNavigateToLogin = { appNavController.popBackStack() }
             )
@@ -137,7 +123,14 @@ fun AppNavigation(modifier: Modifier = Modifier) {
         }
 
         composable(AppRoute.Resumen.route) {
-            ResumenScreen(usuarioViewModel = usuarioViewModel, mainViewModel = mainViewModel)
+            ResumenScreen(
+                usuarioViewModel = usuarioViewModel,
+                onNavigateToLogin = {
+                    appNavController.navigate(AppRoute.Login.route) {
+                        popUpTo(AppRoute.Resumen.route) { inclusive = true }
+                    }
+                }
+            )
         }
 
         composable(AppRoute.Payment.route) {

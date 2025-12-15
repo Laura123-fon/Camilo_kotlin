@@ -22,7 +22,7 @@ class UsuarioViewModel(private val userManager: UserManager) : ViewModel() {
         loadUserProfile()
     }
 
-    private fun loadUserProfile() {
+    fun loadUserProfile() {
         viewModelScope.launch {
             _userProfile.value = userManager.getUserProfile()
         }

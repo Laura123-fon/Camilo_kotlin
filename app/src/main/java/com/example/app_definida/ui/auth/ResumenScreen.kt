@@ -1,4 +1,4 @@
-package com.example.app_definida.ui.checkout
+package com.example.app_definida.ui.auth
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,14 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.app_definida.navigation.AppRoute
-import com.example.app_definida.ui.main.MainViewModel
 import com.example.app_definida.ui.profile.UsuarioViewModel
 
 @Composable
 fun ResumenScreen(
     usuarioViewModel: UsuarioViewModel,
-    mainViewModel: MainViewModel
+    onNavigateToLogin: () -> Unit
 ) {
     val userProfile by usuarioViewModel.userProfile.collectAsState()
 
@@ -61,13 +59,7 @@ fun ResumenScreen(
         Spacer(modifier = Modifier.weight(1f))
 
         Button(
-            onClick = { 
-                mainViewModel.navigateTo(
-                    route = AppRoute.Login, 
-                    popUpToRoute = AppRoute.Resumen,
-                    inclusive = true
-                )
-            },
+            onClick = onNavigateToLogin,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Ir a Iniciar Sesión")

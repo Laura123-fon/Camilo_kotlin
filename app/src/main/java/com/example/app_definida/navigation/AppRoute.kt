@@ -6,6 +6,4 @@ sealed class AppRoute(val route: String) {
     object Main : AppRoute("main_screen")
     object Payment : AppRoute("payment_screen")
     object Resumen : AppRoute("resumen_screen")
-    object Perfil : AppRoute("perfil_screen")
-    object Web : AppRoute("web_screen")
 }

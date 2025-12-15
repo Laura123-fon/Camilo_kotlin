@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.app_definida.data.model.Product
+import java.util.Locale
 
 @Composable
 fun ProductoCard(product: Product, onAddToCart: () -> Unit) {
@@ -53,7 +54,7 @@ fun ProductoCard(product: Product, onAddToCart: () -> Unit) {
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = "$${String.format("%,.0f", product.precio).replace(',', '.')}",
+                    text = "$${String.format(Locale.getDefault(), "%,.0f", product.precio).replace(',', '.')}",
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.SemiBold,
                     color = Color(0xFF2E8B57),
