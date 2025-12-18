@@ -23,14 +23,20 @@ class ProductViewModel(private val productRepository: ProductRepository) : ViewM
         fetchProducts()
     }
 
-    private fun fetchProducts() {
+    // Cambiado a público para poder llamarlo desde la navegación tras el login
+    fun fetchProducts() {
         viewModelScope.launch {
             _uiState.value = ProductUiState.Loading
             val result = productRepository.getProducts()
-            _uiState.value = if (result.isSuccess) {
-                ProductUiState.Success(result.getOrNull() ?: emptyList())
+            if (result.isSuccess) {
+                val list = result.getOrNull() ?: emptyList()
+                if (list.isEmpty()) {
+                    _uiState.value = ProductUiState.Error("No hay productos disponibles en el backend.")
+                } else {
+                    _uiState.value = ProductUiState.Success(list)
+                }
             } else {
-                ProductUiState.Error(result.exceptionOrNull()?.message ?: "Error desconocido")
+                _uiState.value = ProductUiState.Error(result.exceptionOrNull()?.message ?: "Error al conectar con el servidor")
             }
         }
     }

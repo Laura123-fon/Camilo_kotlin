@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.app_definida.data.model.CartProduct
 
-@Database(entities = [CartProduct::class], version = 1, exportSchema = false)
+@Database(entities = [CartProduct::class], version = 3, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun cartProductDao(): CartProductDao
@@ -22,7 +22,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "app_database"
                 )
-                .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
                 .build()
                 INSTANCE = instance
                 instance

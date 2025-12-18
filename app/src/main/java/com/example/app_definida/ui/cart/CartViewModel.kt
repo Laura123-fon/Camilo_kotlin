@@ -18,30 +18,40 @@ class CartViewModel(private val dao: CartProductDao) : ViewModel() {
     init {
         viewModelScope.launch {
             dao.getAll().collect { cartProducts ->
-                val cartItems = cartProducts.map { cartProduct ->
+                val cartItems = cartProducts.map { cp ->
                     CartItem(
                         producto = Product(
-                            id = cartProduct.id,
-                            nombre = cartProduct.nombre,
-                            descripcion = "",
-                            precio = cartProduct.precio,
-                            categoria = "",
-                            imagenUrl = cartProduct.imagenUrl,
-                            descuento = cartProduct.descuento
+                            id = cp.id,
+                            nombre = cp.nombre,
+                            descripcion = cp.descripcion,
+                            precio = cp.precio,
+                            stock = cp.stock,
+                            imagenUrl = cp.imagenUrl,
+                            origen = cp.origen,
+                            sostenibilidad = cp.sostenibilidad,
+                            categoria = cp.categoria,
+                            receta = cp.receta,
+                            calificacion = cp.calificacion,
+                            descuento = cp.descuento
                         ),
-                        cantidad = cartProduct.cantidad
+                        cantidad = cp.cantidad
                     )
                 }
 
                 val subtotal = cartItems.sumOf { it.producto.precio * it.cantidad }
+                val totalDescuento = cartItems.sumOf { 
+                    (it.producto.precio * (it.producto.descuento / 100.0)) * it.cantidad 
+                }
                 val costoEnvio = if (subtotal > 0) 3000.0 else 0.0
+                val totalFinal = (subtotal - totalDescuento) + costoEnvio
                 
                 _uiState.update {
                     it.copy(
                         items = cartItems,
                         subtotal = subtotal,
+                        descuentoTotal = totalDescuento,
                         costoEnvio = costoEnvio,
-                        total = subtotal + costoEnvio
+                        total = totalFinal
                     )
                 }
             }
@@ -52,33 +62,39 @@ class CartViewModel(private val dao: CartProductDao) : ViewModel() {
         viewModelScope.launch {
             val itemExistente = dao.getById(producto.id)
             if (itemExistente != null) {
-                val updatedItem = itemExistente.copy(cantidad = itemExistente.cantidad + 1)
-                dao.update(updatedItem)
+                dao.update(itemExistente.copy(cantidad = itemExistente.cantidad + 1))
             } else {
-                val newItem = CartProduct(
-                    id = producto.id,
-                    nombre = producto.nombre,
-                    precio = producto.precio,
-                    imagenUrl = producto.imagenUrl,
-                    cantidad = 1,
-                    descuento = producto.descuento
+                dao.insert(
+                    CartProduct(
+                        id = producto.id,
+                        nombre = producto.nombre,
+                        precio = producto.precio,
+                        imagenUrl = producto.imagenUrl,
+                        cantidad = 1,
+                        descuento = producto.descuento,
+                        descripcion = producto.descripcion,
+                        origen = producto.origen,
+                        sostenibilidad = producto.sostenibilidad,
+                        categoria = producto.categoria,
+                        receta = producto.receta,
+                        calificacion = producto.calificacion,
+                        stock = producto.stock
+                    )
                 )
-                dao.insert(newItem)
             }
         }
     }
     
     fun eliminarProducto(cartItem: CartItem) {
         viewModelScope.launch {
-            val cartProductToDelete = CartProduct(
-                id = cartItem.producto.id,
-                nombre = cartItem.producto.nombre,
-                precio = cartItem.producto.precio,
-                imagenUrl = cartItem.producto.imagenUrl,
-                cantidad = cartItem.cantidad,
-                descuento = cartItem.producto.descuento
-            )
-            dao.delete(cartProductToDelete)
+            val cp = dao.getById(cartItem.producto.id)
+            if (cp != null) {
+                if (cp.cantidad > 1) {
+                    dao.update(cp.copy(cantidad = cp.cantidad - 1))
+                } else {
+                    dao.delete(cp)
+                }
+            }
         }
     }
 

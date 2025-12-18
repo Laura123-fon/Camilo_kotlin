@@ -25,7 +25,6 @@ import com.example.app_definida.ui.cart.CartViewModelFactory
 import com.example.app_definida.ui.checkout.PaymentScreen
 import com.example.app_definida.ui.main.BottomBarRoute
 import com.example.app_definida.ui.main.MainScreen
-import com.example.app_definida.ui.main.MainViewModel
 import com.example.app_definida.ui.product.ProductCatalogScreen
 import com.example.app_definida.ui.product.ProductViewModel
 import com.example.app_definida.ui.product.ProductViewModelFactory
@@ -38,10 +37,9 @@ fun AppNavigation(modifier: Modifier = Modifier) {
     val appNavController = rememberNavController()
     val context = LocalContext.current
 
-    // --- Restauramos todas las dependencias ---
     val tokenManager = TokenManager(context)
     val userManager = UserManager(context)
-    val apiService = RetrofitClient.create(context)
+    val apiService = RetrofitClient.getApiService(context)
     
     val authRepository = AuthRepository(apiService, tokenManager, userManager)
     val authViewModel: AuthViewModel = viewModel(factory = AuthViewModelFactory(authRepository))
@@ -57,13 +55,14 @@ fun AppNavigation(modifier: Modifier = Modifier) {
 
     NavHost(
         navController = appNavController,
-        startDestination = AppRoute.Login.route, // <-- ¡NUEVO PUNTO DE INICIO!
+        startDestination = AppRoute.Login.route,
         modifier = modifier
     ) {
         composable(AppRoute.Login.route) {
             LoginScreen(
                 authViewModel = authViewModel,
                 onLoginSuccess = {
+                    productViewModel.fetchProducts()
                     appNavController.navigate(AppRoute.Main.route) {
                         popUpTo(AppRoute.Login.route) { inclusive = true }
                     }

@@ -11,8 +11,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitClient {
 
     private const val BASE_URL = "http://10.0.2.2:9090/"
+    private var apiService: ApiService? = null
 
-    fun create(context: Context): ApiService {
+    fun getApiService(context: Context): ApiService {
+        return apiService ?: synchronized(this) {
+            val instance = create(context)
+            apiService = instance
+            instance
+        }
+    }
+
+    private fun create(context: Context): ApiService {
         val tokenManager = TokenManager(context)
 
         val loggingInterceptor = HttpLoggingInterceptor().apply {
@@ -24,12 +33,11 @@ object RetrofitClient {
             .addInterceptor(loggingInterceptor)
             .build()
 
-        val retrofit = Retrofit.Builder()
+        return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-
-        return retrofit.create(ApiService::class.java)
+            .create(ApiService::class.java)
     }
 }

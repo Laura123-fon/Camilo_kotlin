@@ -21,10 +21,9 @@ class AuthRepository(
             if (response.isSuccessful && response.body() != null) {
                 val body = response.body()!!
                 tokenManager.saveToken(body.token)
-                // Guarda solo la información que tenemos en este punto (el email/username)
                 userManager.saveUserProfile(
-                    nombre = "", // Dejamos el nombre vacío para ser actualizado después
-                    apellido = "", // Dejamos el apellido vacío para ser actualizado después
+                    nombre = "",
+                    apellido = "",
                     email = body.username
                 )
                 Result.success(Unit)

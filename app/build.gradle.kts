@@ -43,80 +43,67 @@ android {
         compose = true
     }
 
-    // --- SOLUCIÓN AL ERROR DE MERGE DE RECURSOS ---
-    // Configura cómo se empaquetan los archivos JAR en el APK de prueba.
     packagingOptions{
         resources {
-            // Excluye archivos de metadatos (licencias y avisos) que se duplican
-            // en las dependencias de testing (especialmente JUnit y MockK).
-            excludes += "/META-INF/{AL2.0,LGPL2.1}" // Exclusiones comunes para resolver conflictos de licencias
-            excludes += "META-INF/LICENSE.md" // Archivo específico que causó el error
+            excludes += "/META-INF/{AL2.0,LGPL2.1}" 
+            excludes += "META-INF/LICENSE.md"
             excludes += "META-INF/LICENSE-notice.md"
             excludes += "META-INF/LICENSE"
         }
     }
-    // ---------------------------------------------
 }
 
 // Bloque de dependencias
 dependencies {
 
     // --- DEPENDENCIAS CORE Y KOTLIN ---
-    implementation(libs.androidx.core.ktx) // Funciones de extensión de Kotlin para Android
-    implementation(libs.kotlinx.coroutines.android) // Implementación de Coroutines para Android
+    implementation(libs.androidx.core.ktx) 
+    implementation(libs.kotlinx.coroutines.android) 
 
-    // --- DEPENDENCIAS COMPOSE FUNDAMENTALES ---
-    // Usar la BOM (Bill of Materials) para gestionar versiones de Compose de forma coherente
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.activity.compose) // Integración de Activity con Compose
-    implementation(libs.androidx.compose.ui) // Toolkit base de Compose UI
-    implementation(libs.androidx.compose.ui.graphics) // Gráficos base
-    implementation(libs.androidx.compose.ui.tooling.preview) // Herramientas para previsualización
-    implementation(libs.androidx.compose.material3) // Implementación de Material Design 3
-    implementation(libs.androidx.compose.material3.window.size.class1) // Para diseño adaptable
-    implementation(libs.androidx.compose.material.icons.extended) // Iconos adicionales
+    implementation(libs.androidx.activity.compose) 
+    implementation(libs.androidx.compose.ui) 
+    implementation(libs.androidx.compose.ui.graphics) 
+    implementation(libs.androidx.compose.ui.tooling.preview) 
+    implementation(libs.androidx.compose.material3) 
+    implementation(libs.androidx.compose.material3.window.size.class1) 
+    implementation(libs.androidx.compose.material.icons.extended) 
 
-    // --- DEPENDENCIAS DE ARQUITECTURA (LIFECYCLE, NAVIGATION) ---
-    implementation(libs.androidx.lifecycle.runtime.ktx) // Soporte de Coroutines para Lifecycle
-    implementation(libs.androidx.lifecycle.viewmodel.compose) // ViewModel Integration para Compose
-    implementation(libs.androidx.lifecycle.runtime.compose) // Para observar estados de Lifecycle
-    implementation(libs.androidx.navigation.compose) // Navegación entre composables
+    implementation(libs.androidx.lifecycle.runtime.ktx) 
+    implementation(libs.androidx.lifecycle.viewmodel.compose) 
+    implementation(libs.androidx.lifecycle.runtime.compose) 
+    implementation(libs.androidx.navigation.compose) 
 
-    // --- DEPENDENCIAS DE PERSISTENCIA Y DATOS ---
-    // Room Database
     implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx) // Extensiones de Kotlin para Room
-    ksp(libs.androidx.room.compiler) // KSP para la generación de código de Room
+    implementation(libs.androidx.room.ktx) 
+    ksp(libs.androidx.room.compiler) 
 
-    // DataStore Preferences
     implementation(libs.androidx.datastore.core)
     implementation(libs.androidx.datastore.preferences)
 
-    // --- DEPENDENCIAS DE RED (ASUMIDAS POR LA MAQUETA ORIGINAL) ---
-    implementation(libs.coil.compose) // Carga de imágenes (asumida)
-    implementation(libs.retrofit) // Cliente HTTP principal
-    implementation(libs.retrofit.converter.gson) // Convertidor JSON
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0") // Interceptor para logs de red
+    implementation(libs.coil.compose) 
+    implementation(libs.retrofit) 
+    implementation(libs.retrofit.converter.gson) 
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0") 
 
     // =================================================================
-    // --- DEPENDENCIAS DE TESTING ---
+    // --- DEPENDENCIAS DE TESTING REPARADAS ---
     // =================================================================
 
-    // 1. UNIT TESTING (Pruebas de lógica pura)
-    testImplementation("junit:junit:4.13.2") // JUnit 4 Core
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0") // Coroutines Test
-    testImplementation("androidx.arch.core:core-testing:2.2.0") // Lifecycle/Arch Test
+    // 1. UNIT TESTING (src/test)
+    testImplementation("junit:junit:4.13.2") 
+    testImplementation("io.mockk:mockk:1.13.10") // ¡Añadido para Unit Tests!
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0") 
+    testImplementation("androidx.arch.core:core-testing:2.2.0") 
+    testImplementation("app.cash.turbine:turbine:1.1.0") // Para testear Flows
 
-    // 2. UI TESTING (Pruebas de interfaz de usuario con Compose - src/androidTest)
-    androidTestImplementation("io.mockk:mockk-android:1.13.10") // Mocking for Android
-
-    // Infraestructura de Compose Test
+    // 2. UI TESTING (src/androidTest)
+    androidTestImplementation("io.mockk:mockk-android:1.13.10") 
     androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4) // Incluye 'isA'
-    androidTestImplementation(libs.androidx.junit) // AndroidX JUnit extensions
-    androidTestImplementation(libs.androidx.espresso.core) // Opcional, pero común
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4) 
+    androidTestImplementation(libs.androidx.junit) 
+    androidTestImplementation(libs.androidx.espresso.core) 
 
-    // Manifest Test: Necesario para que las herramientas de UI Test funcionen en el entorno de desarrollo
-    debugImplementation(libs.androidx.compose.ui.test.manifest) // Resuelve errores si faltaba
-    debugImplementation(libs.androidx.compose.ui.tooling) // Herramientas de depuración
+    debugImplementation(libs.androidx.compose.ui.test.manifest) 
+    debugImplementation(libs.androidx.compose.ui.tooling) 
 }

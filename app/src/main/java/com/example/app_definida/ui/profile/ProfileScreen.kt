@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Environment
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -42,6 +43,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import coil.compose.AsyncImage
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun ProfileScreen(
@@ -56,19 +60,28 @@ fun ProfileScreen(
         onResult = { uri: Uri? -> usuarioViewModel.actualizarUriImagen(uri) }
     )
 
-    fun createTempUri(context: Context): Uri {
-        val imagesDir = File(context.cacheDir, "images")
-        imagesDir.mkdirs()
-        val file = File(imagesDir, "${System.currentTimeMillis()}_profile.jpg")
-        return FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
-    }
+    var tempUri by remember { mutableStateOf<Uri?>(null) }
 
-    var tempUri: Uri? by remember { mutableStateOf(null) }
+    fun createImageUri(context: Context): Uri {
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        val file = File.createTempFile("JPEG_${timeStamp}_", ".jpg", storageDir)
+        
+        return FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.provider",
+            file
+        )
+    }
 
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture(),
         onResult = { success ->
-            if (success) { usuarioViewModel.actualizarUriImagen(tempUri) }
+            if (success) {
+                usuarioViewModel.actualizarUriImagen(tempUri)
+            } else {
+                Toast.makeText(context, "No se capturó la foto", Toast.LENGTH_SHORT).show()
+            }
         }
     )
 
@@ -76,9 +89,9 @@ fun ProfileScreen(
         contract = ActivityResultContracts.RequestPermission(),
         onResult = { isGranted ->
             if (isGranted) {
-                val newUri = createTempUri(context)
-                tempUri = newUri
-                cameraLauncher.launch(newUri)
+                val uri = createImageUri(context)
+                tempUri = uri
+                cameraLauncher.launch(uri)
             } else {
                 Toast.makeText(context, "Permiso de cámara denegado", Toast.LENGTH_SHORT).show()
             }
@@ -108,11 +121,11 @@ fun ProfileScreen(
         Spacer(Modifier.height(16.dp))
 
         Text(
-            text = "${userProfile?.nombre ?: ""} ${userProfile?.apellido ?: ""}".trim(),
+            text = "${userProfile?.nombre ?: ""} ${userProfile?.apellido ?: ""}".trim().ifEmpty { "Usuario" },
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
-        Text(text = userProfile?.email ?: "", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(text = userProfile?.email ?: "Sin correo", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         
         Spacer(Modifier.height(24.dp))
 
@@ -121,9 +134,9 @@ fun ProfileScreen(
             Button(onClick = {
                 val permission = Manifest.permission.CAMERA
                 if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
-                    val newUri = createTempUri(context)
-                    tempUri = newUri
-                    cameraLauncher.launch(newUri)
+                    val uri = createImageUri(context)
+                    tempUri = uri
+                    cameraLauncher.launch(uri)
                 } else {
                     cameraPermissionLauncher.launch(permission)
                 }
